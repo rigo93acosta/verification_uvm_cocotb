@@ -1,0 +1,7 @@
+WARNING : [MON] : This is a warning message @ 209 mSec
+INFO : [MON] : This is an info message @ 209 mSec
+CRITICAL : [MON] : This is a critical message @ 209 mSec
+WARNING : [MON] : This is a warning message @ 611 mSec
+INFO : [MON] : This is an info message @ 612 mSec
+CRITICAL : [MON] : This is a critical message @ 612 mSec
+INFO : [MON] : Values of a: 0b101, b: 0b10, y: 0b111 @ 612 mSec
