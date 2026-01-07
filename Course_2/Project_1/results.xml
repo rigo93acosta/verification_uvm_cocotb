@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1767721903" />
+    <testcase name="test" classname="sum_tb" file="/home/riacosta/uvm_ver/Course_2/Project_1/sum_tb.py" lineno="5" time="0.0008885860443115234" sim_time_ns="10.0" ratio_time="11253.834182989" />
+  </testsuite>
+</testsuites>
