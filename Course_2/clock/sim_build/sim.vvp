@@ -1,0 +1,38 @@
+#! /usr/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/system.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/vhdl_sys.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/vhdl_textio.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/v2005_math.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/va_math.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/v2009.vpi";
+S_0x6284a5a30540 .scope package, "$unit" "$unit" 2 1;
+ .timescale -9 -12;
+S_0x6284a5a306f0 .scope module, "top" "top" 3 1;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 1 "clk";
+    .port_info 1 /INPUT 1 "clk1";
+    .port_info 2 /INPUT 1 "clk2";
+    .port_info 3 /INPUT 1 "clk3";
+o0x7ce45fedf018 .functor BUFZ 1, C4<z>; HiZ drive
+v0x6284a5a42430_0 .net "clk", 0 0, o0x7ce45fedf018;  0 drivers
+o0x7ce45fedf048 .functor BUFZ 1, C4<z>; HiZ drive
+v0x6284a5a77900_0 .net "clk1", 0 0, o0x7ce45fedf048;  0 drivers
+o0x7ce45fedf078 .functor BUFZ 1, C4<z>; HiZ drive
+v0x6284a5a779c0_0 .net "clk2", 0 0, o0x7ce45fedf078;  0 drivers
+o0x7ce45fedf0a8 .functor BUFZ 1, C4<z>; HiZ drive
+v0x6284a5a77a90_0 .net "clk3", 0 0, o0x7ce45fedf0a8;  0 drivers
+    .scope S_0x6284a5a306f0;
+T_0 ;
+    %vpi_call/w 3 9 "$dumpfile", "clocks.vcd" {0 0 0};
+    %vpi_call/w 3 10 "$dumpvars", 32'sb00000000000000000000000000000001, S_0x6284a5a306f0 {0 0 0};
+    %end;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "-";
+    "/home/riacosta/uvm_ver/Course_2/clock/top_clock.sv";
