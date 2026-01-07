@@ -1,0 +1,46 @@
+#! /usr/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/system.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/vhdl_sys.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/vhdl_textio.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/v2005_math.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/va_math.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/v2009.vpi";
+S_0x603e546e8510 .scope package, "$unit" "$unit" 2 1;
+ .timescale -9 -12;
+S_0x603e546e86a0 .scope module, "adder" "adder" 3 3;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 4 "a";
+    .port_info 1 /INPUT 4 "b";
+    .port_info 2 /OUTPUT 5 "y";
+o0x7f4f208a0018 .functor BUFZ 4, C4<zzzz>; HiZ drive
+v0x603e5470e830_0 .net "a", 3 0, o0x7f4f208a0018;  0 drivers
+o0x7f4f208a0048 .functor BUFZ 4, C4<zzzz>; HiZ drive
+v0x603e54730620_0 .net "b", 3 0, o0x7f4f208a0048;  0 drivers
+v0x603e54730700_0 .var "y", 4 0;
+E_0x603e546e8a90 .event anyedge, v0x603e5470e830_0, v0x603e54730620_0;
+    .scope S_0x603e546e86a0;
+T_0 ;
+    %wait E_0x603e546e8a90;
+    %load/vec4 v0x603e5470e830_0;
+    %pad/u 5;
+    %load/vec4 v0x603e54730620_0;
+    %pad/u 5;
+    %add;
+    %store/vec4 v0x603e54730700_0, 0, 5;
+    %jmp T_0;
+    .thread T_0, $push;
+    .scope S_0x603e546e86a0;
+T_1 ;
+    %vpi_call/w 3 15 "$dumpfile", "dump.vcd" {0 0 0};
+    %vpi_call/w 3 16 "$dumpvars", 32'sb00000000000000000000000000000001, S_0x603e546e86a0 {0 0 0};
+    %end;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "-";
+    "/home/riacosta/uvm_ver/Course_2/4bit_adder/adder.sv";
