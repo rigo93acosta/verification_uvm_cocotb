@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1767759704" />
+    <testcase name="test" classname="adder_tb" file="/home/riacosta/uvm_ver/Course_2/reset/adder_tb.py" lineno="6" time="0.0012094974517822266" sim_time_ns="125.0" ratio_time="103348.70885077862" />
+  </testsuite>
+</testsuites>
