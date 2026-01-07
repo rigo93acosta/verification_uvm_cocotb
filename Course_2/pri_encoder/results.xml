@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1767792575" />
+    <testcase name="test" classname="pri_enc_tb" file="/home/riacosta/uvm_ver/Course_2/pri_encoder/pri_enc_tb.py" lineno="31" time="0.009047508239746094" sim_time_ns="600.0" ratio_time="66316.60166543692" />
+  </testsuite>
+</testsuites>
