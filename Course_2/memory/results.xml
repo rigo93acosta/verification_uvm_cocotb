@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1767845839" />
+    <testcase name="test" classname="memory_tb" file="/home/riacosta/Documents/uvm_ver/Course_2/memory/memory_tb.py" lineno="70" time="0.012328624725341797" sim_time_ns="2000.0" ratio_time="162224.09591955136" />
+  </testsuite>
+</testsuites>
