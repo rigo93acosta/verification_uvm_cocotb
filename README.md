@@ -1,0 +1,61 @@
+# uvm-ver
+
+Este proyecto es una colección de ejercicios y proyectos para aprender verificación utilizando Universal Verification Methodology (UVM) con cocotb para diseños en Verilog. Está diseñado para estudiantes o desarrolladores interesados en la verificación de hardware digital.
+
+## Dependencias
+
+El proyecto requiere las siguientes bibliotecas de Python:
+- cocotb (>=2.0.1): Para la simulación y verificación de diseños Verilog desde Python.
+- pandas (>=2.3.3): Para el manejo de datos.
+- pytest (>=9.0.2): Para pruebas unitarias.
+- pyuvm (>=4.0.1): Para implementar UVM en Python.
+
+Puedes instalar las dependencias usando `pip` o `uv` (como se ve en el archivo `pyproject.toml`).
+
+## Estructura del Proyecto
+
+### main.py
+Este es el script principal que verifica la instalación de las bibliotecas esenciales necesarias para el proyecto. Al ejecutarlo, imprime un mensaje de bienvenida y comprueba si todas las dependencias están disponibles. Si alguna falta, te informa para que la instales.
+
+### Course_1
+Esta carpeta contiene módulos de Python básicos que sirven como utilidades para operaciones relacionadas con la verificación y el manejo de datos binarios. Incluye:
+- `v_binaries.py`: Demuestra operaciones binarias básicas (AND, OR, XOR, NOT).
+- `v_binary_types.py`: Utilidades para tipos de datos binarios.
+- `v_decorator.py`: Decoradores para funciones.
+- `v_loggin.py`: Utilidades para logging (probablemente un módulo de logging personalizado).
+- `v_random.py`: Funciones para generación de números aleatorios.
+- `v_random_choice.py`: Selección aleatoria de elementos.
+
+Estos módulos proporcionan herramientas fundamentales para el curso de verificación.
+
+### Course_2
+Esta carpeta contiene proyectos prácticos de verificación de diseños Verilog utilizando cocotb. Cada subcarpeta representa un proyecto específico con su módulo Verilog, testbench en Python, y archivos de simulación. Incluye:
+- `4bit_adder/`: Verificación de un sumador de 4 bits.
+- `8_1_mux/`: Verificación de un multiplexor 8:1.
+- `binary/`: Proyecto relacionado con operaciones binarias.
+- `clock/`: Verificación de señales de reloj.
+- `d_flip_flop/`: Verificación de un flip-flop D.
+- `functions/`: Verificación de funciones en Verilog.
+- `memory/`: Verificación de memoria.
+- `pri_encoder/`: Verificación de un codificador de prioridad.
+- `Project_1/`: Proyecto 1, que incluye sumadores.
+- `rac_4bit/`: Sumador carry ripple de 4 bits.
+- `reset/`: Verificación con señales de reset.
+- `start_soon/`: Proyecto de inicio rápido.
+
+Cada proyecto incluye:
+- Archivos `.sv`: Módulos Verilog.
+- Archivos `_tb.py`: Testbenches escritos con cocotb.
+- `makefile`: Para compilar y ejecutar simulaciones.
+- `results.xml`: Resultados de las pruebas.
+- `dump.vcd`: Archivos de waveform para análisis.
+- `sim_build/`: Archivos generados durante la simulación.
+
+## Cómo Usar
+
+1. Asegúrate de tener Python >=3.12 instalado.
+2. Instala las dependencias: `uv sync` o `pip install -e .`
+3. Ejecuta `uv run main.py` para verificar las bibliotecas.
+4. Navega a cualquier proyecto en `Course_2` y ejecuta `make` para simular.
+
+Este proyecto es ideal para aprender verificación de hardware paso a paso, desde conceptos básicos en Python hasta implementaciones completas en Verilog con UVM.
