@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1767878605" />
+    <testcase name="test" classname="top_tb" file="/home/riacosta/Documents/uvm_ver/Course_3/transaction/top_tb.py" lineno="33" time="0.002010822296142578" sim_time_ns="100.0" ratio_time="49730.898743182355" />
+  </testsuite>
+</testsuites>
