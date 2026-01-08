@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1767838714" />
+    <testcase name="test" classname="half_adder_tb" file="/home/riacosta/uvm_ver/Course_2/rac_4bit/half_adder_tb.py" lineno="1" time="0.0009570121765136719" sim_time_ns="100.0" ratio_time="104491.87842551072" />
+  </testsuite>
+</testsuites>

@@ -1,0 +1,66 @@
+$date
+	Wed Jan  7 23:18:34 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module top $end
+$var wire 4 ! a [3:0] $end
+$var wire 4 " b [3:0] $end
+$var wire 1 # cin $end
+$var wire 4 $ sout [3:0] $end
+$var wire 1 % cout $end
+$var wire 1 & c2 $end
+$var wire 1 ' c1 $end
+$var wire 1 ( c0 $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+1(
+0'
+1&
+1%
+b1010 $
+1#
+b1100 "
+b1101 !
+$end
+#20000
+0&
+0(
+b101 $
+0#
+b1001 "
+b1100 !
+#40000
+0%
+1(
+b1010 $
+b1 "
+b1001 !
+#60000
+1%
+1&
+1'
+1(
+b0 $
+1#
+b11 "
+b1100 !
+#80000
+0%
+0&
+0'
+0(
+b1111 $
+0#
+b1001 "
+b110 !
+#100000
