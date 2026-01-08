@@ -12,6 +12,19 @@ El proyecto requiere las siguientes bibliotecas de Python:
 
 Puedes instalar las dependencias usando `pip` o `uv` (como se ve en el archivo `pyproject.toml`).
 
+## Herramientas del Sistema
+
+Además de las bibliotecas de Python, el proyecto requiere las siguientes herramientas del sistema para la simulación de Verilog y visualización de waveforms:
+- **Icarus Verilog** (iverilog): Simulador de Verilog utilizado en los makefiles para compilar y ejecutar las simulaciones.
+- **GTKWave**: Visor de waveforms para analizar los archivos `.vcd` generados durante las simulaciones.
+
+Asegúrate de instalar estas herramientas en tu sistema. En Ubuntu/Debian, puedes usar:
+```bash
+sudo apt-get install iverilog gtkwave
+```
+
+En otras distribuciones de Linux, consulta la documentación oficial de cada herramienta.
+
 ## Estructura del Proyecto
 
 ### main.py
