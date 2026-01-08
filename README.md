@@ -1,4 +1,4 @@
-# uvm-ver
+# Python Verification with UVM and cocotb
 
 Este proyecto es una colección de ejercicios y proyectos para aprender verificación utilizando Universal Verification Methodology (UVM) con cocotb para diseños en Verilog. Está diseñado para estudiantes o desarrolladores interesados en la verificación de hardware digital.
 
