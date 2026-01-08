@@ -1,0 +1,59 @@
+$date
+	Thu Jan  8 10:36:38 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module top $end
+$var wire 1 ! clk $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+1!
+$end
+#5000
+0!
+#10000
+1!
+#15000
+0!
+#20000
+1!
+#25000
+0!
+#30000
+1!
+#35000
+0!
+#40000
+1!
+#45000
+0!
+#50000
+1!
+#55000
+0!
+#60000
+1!
+#65000
+0!
+#70000
+1!
+#75000
+0!
+#80000
+1!
+#85000
+0!
+#90000
+1!
+#95000
+0!
+#100000
