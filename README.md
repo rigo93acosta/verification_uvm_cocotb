@@ -64,11 +64,34 @@ Cada proyecto incluye:
 - `dump.vcd`: Archivos de waveform para análisis.
 - `sim_build/`: Archivos generados durante la simulación.
 
+### Course_3
+Esta carpeta contiene proyectos avanzados de verificación de diseños Verilog utilizando cocotb, enfocándose en conceptos como clases, transacciones, IPC y entornos de verificación. Cada subcarpeta representa un proyecto específico con su módulo Verilog, testbench en Python, y archivos de simulación. Incluye:
+- `classes_trans/`: Verificación utilizando clases y transacciones.
+- `classIPC/`: Comunicación entre procesos con clases.
+- `env_verification/`: Entornos de verificación completos.
+- `ipc/`: Comunicación entre procesos.
+- `prj_1_all/`: Proyecto integral combinando múltiples conceptos.
+- `random/`: Verificación con generación aleatoria.
+- `transaction/`: Manejo de transacciones en verificación.
+
+Cada proyecto incluye:
+- Archivos `.sv`: Módulos Verilog.
+- Archivos `_tb.py`: Testbenches escritos con cocotb.
+- `makefile`: Para compilar y ejecutar simulaciones.
+- `results.xml`: Resultados de las pruebas.
+- `dump.vcd`: Archivos de waveform para análisis.
+- `sim_build/`: Archivos generados durante la simulación.
+
+### Course_4
+Esta carpeta contiene proyectos especializados de verificación avanzada utilizando patrones UVM-like con cocotb. Cada proyecto incluye una documentación detallada en un archivo Markdown dedicado.
+
+- **p1_mult/**: Verificación de un multiplicador combinacional de 4x4 bits utilizando un testbench estructurado con generador, driver, monitor y scoreboard. [Ver detalles](Course_4/p1_mult/Testbench%20de%20Multiplicador.md)
+
 ## Cómo Usar
 
 1. Asegúrate de tener Python >=3.12 instalado.
 2. Instala las dependencias: `uv sync` o `pip install -e .`
 3. Ejecuta `uv run main.py` para verificar las bibliotecas.
-4. Navega a cualquier proyecto en `Course_2` y ejecuta `make` para simular.
+4. Navega a cualquier proyecto en `Course_2`, `Course_3` o `Course_4` y ejecuta `make` para simular.
 
 Este proyecto es ideal para aprender verificación de hardware paso a paso, desde conceptos básicos en Python hasta implementaciones completas en Verilog con UVM.
