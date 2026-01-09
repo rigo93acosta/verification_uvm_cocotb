@@ -5,7 +5,8 @@ description = "Learning Verification"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "cocotb[bus]>=2.0.1",
+    "cocotb>=2.0.1",
+    "cocotb-bus>=0.3.0",
     "cocotb-coverage>=2.0",
     "pandas>=2.3.3",
     "pytest>=9.0.2",
