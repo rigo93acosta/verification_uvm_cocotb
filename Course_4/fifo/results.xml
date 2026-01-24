@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1769261259" />
+    <testcase name="test" classname="fifo_tb" file="/home/riacosta/Documents/uvm_ver/Course_4/fifo/fifo_tb.py" lineno="135" time="0.18376541137695312" sim_time_ns="860.0" ratio_time="4679.879600606148" />
+  </testsuite>
+</testsuites>
