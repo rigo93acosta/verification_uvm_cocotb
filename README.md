@@ -86,6 +86,7 @@ Cada proyecto incluye:
 Esta carpeta contiene proyectos especializados de verificación avanzada utilizando patrones UVM-like con cocotb. Cada proyecto incluye una documentación detallada en un archivo Markdown dedicado.
 
 - **p1_mult/**: Verificación de un multiplicador combinacional de 4x4 bits utilizando un testbench estructurado con generador, driver, monitor y scoreboard. [Ver detalles](Course_4/p1_mult/Testbench%20de%20Multiplicador.md)
+- **d_flip_flop/**: Verificación de un D flip-flop síncrono con reset asíncrono utilizando un testbench estructurado con generador, driver, monitor y scoreboard. [Ver detalles](Course_4/d_flip_flop/Testbench%20de%20D%20Flip-Flop.md)
 
 ## Cómo Usar
 
