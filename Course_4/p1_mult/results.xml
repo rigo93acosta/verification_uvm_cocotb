@@ -1,6 +1,6 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1767977468" />
-    <testcase name="mult_test" classname="mult_tb" file="/home/riacosta/Documents/uvm_ver/Course_4/p1_mult/mult_tb.py" lineno="114" time="0.002880573272705078" sim_time_ns="60.0" ratio_time="20829.18722065883" />
+    <property name="random_seed" value="1769226620" />
+    <testcase name="mult_test" classname="mult_tb" file="/home/riacosta/Documents/uvm_ver/Course_4/p1_mult/mult_tb.py" lineno="115" time="0.0020074844360351562" sim_time_ns="60.0" ratio_time="29888.152019002377" />
   </testsuite>
 </testsuites>

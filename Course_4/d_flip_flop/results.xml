@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1769229475" />
+    <testcase name="test" classname="dff_tb" file="/home/riacosta/Documents/uvm_ver/Course_4/d_flip_flop/dff_tb.py" lineno="101" time="0.0052127838134765625" sim_time_ns="240.0" ratio_time="46040.658616904504" />
+  </testsuite>
+</testsuites>
