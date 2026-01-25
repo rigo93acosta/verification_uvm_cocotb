@@ -19,9 +19,7 @@ module UART_RX
 
   enum bit [1:0] {
          idle       =2'b00,
-         start      =2'b01,
-         transfer   =2'b10,
-         done       =2'b11
+         start      =2'b01
        } state;
 
   always@(posedge clk)
