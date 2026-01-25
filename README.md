@@ -90,6 +90,7 @@ Esta carpeta contiene proyectos especializados de verificación avanzada utiliza
 - **fifo/**: Verificación de un FIFO síncrono utilizando un testbench estructurado con generador, driver, monitor y scoreboard. [Ver detalles](Course_4/fifo/Testbench%20de%20FIFO.md)
 - **spi/**: Verificación de un sistema SPI completo (Master, Slave y comunicación) utilizando un testbench estructurado con énfasis en timing constraints. [Ver detalles](Course_4/spi/Testbench%20de%20SPI%20Master.md)
 - **i2c/**: Verificación de un sistema I2C completo (Master, Slave y comunicación bidireccional) utilizando un testbench estructurado con énfasis en lógica open-drain y pull-ups simuladas. [Ver detalles](Course_4/i2c/Testbench%20de%20I2C.md)
+- **uart/**: Verificación de un sistema UART completo (Transmisor, Receptor y comunicación serial asíncrona) utilizando un testbench estructurado con énfasis en timing de baud rate y sincronización. [Ver detalles](Course_4/uart/Testbench%20de%20UART.md)
 
 ## Cómo Usar
 
