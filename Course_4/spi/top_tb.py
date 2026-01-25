@@ -1,19 +1,16 @@
 import cocotb
-from cocotb.triggers import Timer, RisingEdge, ClockCycles, Event, FallingEdge
 from cocotb.clock import Clock
-from cocotb_coverage.crv import Randomized
+from cocotb.triggers import RisingEdge, ClockCycles, Timer, FallingEdge, Event
 from cocotb.queue import Queue
 from cocotb.utils import get_sim_time
+from cocotb_coverage.crv import Randomized
 
 class transaction(Randomized):
-    
+
     def __init__(self):
         Randomized.__init__(self)
         self.newd = 0
         self.din  = 0
-        self.sclk = 0
-        self.mosi = 0
-        self.cs   = 1
         self.dout = 0
 
         self.add_rand("din", list(range(4096)))
@@ -38,6 +35,7 @@ class generator():
             self.event.clear()
 
 class driver():
+
     def __init__(self, dut, queue):
         self.dut = dut
         self.queue = queue
@@ -51,68 +49,65 @@ class driver():
         cocotb.log.info(f"Releasing DUT reset at time {get_sim_time('ns')} ns")
         self.dut.rst.value = 0
 
-
     async def recv_data(self):
         while True:
             temp = transaction()
             temp = await self.queue.get()
             temp.print_in("[DRV]")
-            self.dut.din.value = temp.din #apply newdata
+            self.dut.din.value = temp.din
             self.dut.newd.value = 1
-            await RisingEdge(self.dut.sclk)
+            await RisingEdge(self.dut.spi_master.sclk) 
             self.dut.newd.value = 0
-            await RisingEdge(self.dut.cs) # wait for completion of oper
+            await RisingEdge(self.dut.spi_master.cs) # wait for completion of oper
 
 class monitor():
+
     def __init__(self, dut, queue):
         self.dut = dut
         self.queue = queue
 
     async def sample_data(self):
         while True:
-            """
-            Como envio MSB first no necesito una funcion
-            de shift register para reconstruir el dato recibido
-            """
-            dout = 0 
             temp = transaction()
-            await FallingEdge(self.dut.cs) # wait for start of oper
+            # Wait for start of operation
+            await FallingEdge(self.dut.spi_master.cs)
             temp.din = self.dut.din.value
-            await RisingEdge(self.dut.sclk) # sync to sclk
-            for i in range(12):
-                await RisingEdge(self.dut.sclk)
-                dout = (dout << 1) | int(self.dut.mosi.value)
 
-            await RisingEdge(self.dut.cs) # wait for end of oper
+            # Sample MOSI on rising edges (data changes on falling edge)
+            await RisingEdge(self.dut.spi_master.sclk)
+            dout = 0
+            for _ in range(12):
+                await RisingEdge(self.dut.spi_master.sclk)
+                dout = (dout << 1) | int(self.dut.spi_master.mosi.value)
+
+            # Wait for end of operation
+            await RisingEdge(self.dut.spi_master.cs)
             temp.dout = dout
             await self.queue.put(temp)
-            cocotb.log.info(f"[MON] din: {temp.din.to_unsigned()} : dout = {temp.dout}")
-            
+            cocotb.log.info(f"[MON] din: {temp.din} : dout = {temp.dout}")
+
 class scoreboard():
+
     def __init__(self, queue, event):
         self.queue = queue
         self.event = event
-        self.arr = list()
 
     async def compare_data(self):
-
         while True:
-
+            temp = transaction()
             temp = await self.queue.get()
-            cocotb.log.info(f"[SCO] din: {temp.din.to_unsigned()} : dout = {temp.dout}")
-
-            if temp.din == temp.dout:
-                cocotb.log.info(f"[SCO] Match: din = dout = {temp.din.to_unsigned()}")
+            if (temp.din == temp.dout):
+                cocotb.log.info(f"[SCORE] PASS: din = {temp.din} dout = {temp.dout}")
             else:
-                cocotb.log.error(f"[SCO] Mismatch: din = {temp.din.to_unsigned()} != dout = {temp.dout}")
+                cocotb.log.error(f"[SCORE] FAIL: din = {temp.din} dout = {temp.dout}")
             
-            cocotb.log.info("--------------------------------------------------")
+            cocotb.log.info("--------------------------------")
             self.event.set()
 
 @cocotb.test()
 async def spi_test(dut):
 
-    cocotb.log.info("Starting SPI UVM-like Testbench")
+    cocotb.log.info("Starting SPI Master-Slave Testbench")
 
     # Queues and Events
     drv_queue = Queue()
@@ -123,10 +118,11 @@ async def spi_test(dut):
     gen = generator(drv_queue, gen_event, count=5)
     drv = driver(dut, drv_queue)
     mon = monitor(dut, mon_queue)
-    sco = scoreboard(mon_queue, gen_event)
+    score = scoreboard(mon_queue, gen_event)
 
-    # Clock generation
-    cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start()) # 100 MHz clock
+    # Create clock
+    clock = Clock(dut.clk, 10, unit="ns")  #
+    cocotb.start_soon(clock.start())  # Start clock
 
     # Reset DUT
     await drv.reset_dut()
@@ -135,9 +131,7 @@ async def spi_test(dut):
     cocotb.start_soon(gen.gen_data())
     cocotb.start_soon(drv.recv_data())
     cocotb.start_soon(mon.sample_data())
-    cocotb.start_soon(sco.compare_data())
+    cocotb.start_soon(score.compare_data())
 
-    # Wait for all transactions to complete
-    await Timer(15000, 'ns')
+    await Timer(15000, unit="ns")
 
-    cocotb.log.info("SPI UVM-like Testbench Completed")
