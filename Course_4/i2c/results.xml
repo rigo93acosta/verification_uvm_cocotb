@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1769362838" />
+    <testcase name="test_I2C" classname="i2c_tb" file="/home/riacosta/Documents/uvm_ver/Course_4/i2c/i2c_tb.py" lineno="151" time="3.1822218894958496" sim_time_ns="640040.0" ratio_time="201129.90929787103" />
+  </testsuite>
+</testsuites>
