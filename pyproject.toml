@@ -8,7 +8,9 @@ dependencies = [
     "cocotb>=2.0.1",
     "cocotb-bus>=0.3.0",
     "cocotb-coverage>=2.0",
+    "matplotlib>=3.10.8",
     "pandas>=2.3.3",
     "pytest>=9.0.2",
     "pyuvm>=4.0.1",
+    "scikit-learn>=1.8.0",
 ]
