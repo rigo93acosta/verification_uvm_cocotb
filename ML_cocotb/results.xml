@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1769830656" />
+    <testcase name="fir_ml_test" classname="test_fir_ml_memory" file="/home/riacosta/Documents/uvm_ver/ML_cocotb/test_fir_ml_memory.py" lineno="12" time="1.8324851989746094" sim_time_ns="6011.0" ratio_time="3280.2447754358573" />
+  </testsuite>
+</testsuites>
