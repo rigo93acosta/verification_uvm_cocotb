@@ -1,0 +1,156 @@
+rm -f results.xml
+"make" -f Makefile results.xml
+make[1]: Entering directory '/home/riacosta/Documents/uvm_ver/ML_cocotb'
+mkdir -p sim_build
+/usr/bin/iverilog -o sim_build/sim.vvp -s filter -g2012 -f sim_build/cmds.f  filter.v
+/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb_tools/makefiles/simulators/Makefile.icarus:66: Using MODULE is deprecated, please use COCOTB_TEST_MODULES instead.
+rm -f results.xml
+COCOTB_TEST_MODULES=test_fir_ml_regressor COCOTB_TESTCASE= COCOTB_TEST_FILTER= COCOTB_TOPLEVEL=filter TOPLEVEL_LANG=verilog \
+         /usr/bin/vvp -M /home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/libs -m libcocotbvpi_icarus   sim_build/sim.vvp   
+     -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:93   in _embed_init_python              Using Python 3.12.4 interpreter at /home/riacosta/Documents/uvm_ver/.venv/bin/python
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:79   in gpi_print_registered_impl       VPI registered
+     0.00ns INFO     cocotb                             Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb                             Seeding Python random module with 1769949362
+     0.00ns INFO     cocotb                             Initialized cocotb v2.0.1 from /home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb
+     0.00ns INFO     cocotb                             Running tests
+     0.00ns INFO     cocotb.regression                  running test_fir_ml_regressor.fir_ml_test (1/1)
+     0.00ns INFO     cocotb.filter                      Iniciando búsqueda guiada por Regresión...
+    11.00ns INFO     cocotb.filter                      Nuevo máximo encontrado: 4278 en ciclo 0
+    21.00ns INFO     cocotb.filter                      Nuevo máximo encontrado: 5526 en ciclo 1
+    31.00ns INFO     cocotb.filter                      Nuevo máximo encontrado: 11216 en ciclo 2
+    51.00ns INFO     cocotb.filter                      Nuevo máximo encontrado: 14984 en ciclo 4
+   161.00ns INFO     cocotb.filter                      Nuevo máximo encontrado: 17483 en ciclo 15
+   171.00ns INFO     cocotb.filter                      Nuevo máximo encontrado: 25035 en ciclo 16
+   171.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 16 !!! Valor: -25035
+   181.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 17 !!! Valor: 23131
+   191.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 18 !!! Valor: 1845
+   211.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 20 !!! Valor: -12368
+   281.00ns INFO     cocotb.filter                      Nuevo máximo encontrado: 26814 en ciclo 27
+   281.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 27 !!! Valor: 26814
+   291.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 28 !!! Valor: 13337
+   311.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 30 !!! Valor: -4253
+   361.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 35 !!! Valor: -25434
+   371.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 36 !!! Valor: 12675
+   401.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 39 !!! Valor: 9027
+   411.00ns INFO     cocotb.filter                      Nuevo máximo encontrado: 29516 en ciclo 40
+   421.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 41 !!! Valor: -4190
+   431.00ns INFO     cocotb.filter                      Nuevo máximo encontrado: 30044 en ciclo 42
+   441.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 43 !!! Valor: -22621
+   451.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 44 !!! Valor: 9747
+   481.00ns INFO     cocotb.filter                      Nuevo máximo encontrado: 31869 en ciclo 47
+   481.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 47 !!! Valor: -31869
+   491.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 48 !!! Valor: -12759
+   541.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 53 !!! Valor: -29012
+   551.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 54 !!! Valor: -15994
+   671.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 66 !!! Valor: -14381
+   691.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 68 !!! Valor: -2957
+   741.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 73 !!! Valor: -11834
+   771.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 76 !!! Valor: -13702
+   851.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 84 !!! Valor: -7697
+   911.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 90 !!! Valor: 4228
+   941.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 93 !!! Valor: 16327
+   951.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 94 !!! Valor: 26901
+   961.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 95 !!! Valor: 18234
+   971.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 96 !!! Valor: -7233
+  1001.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 99 !!! Valor: 14685
+  1051.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 104 !!! Valor: 3400
+  1091.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 108 !!! Valor: -16595
+  1101.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 109 !!! Valor: 23313
+  1111.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 110 !!! Valor: 21064
+  1121.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 111 !!! Valor: 21022
+  1131.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 112 !!! Valor: -9548
+  1191.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 118 !!! Valor: -13463
+  1211.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 120 !!! Valor: 13267
+  1231.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 122 !!! Valor: 29781
+  1241.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 123 !!! Valor: 12709
+  1261.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 125 !!! Valor: 25263
+  1271.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 126 !!! Valor: -9876
+  1291.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 128 !!! Valor: 10430
+  1311.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 130 !!! Valor: 5760
+  1341.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 133 !!! Valor: 25322
+  1351.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 134 !!! Valor: 29504
+  1361.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 135 !!! Valor: 15836
+  1371.00ns INFO     cocotb.filter                      Nuevo máximo encontrado: 32285 en ciclo 136
+  1381.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 137 !!! Valor: -623
+  1401.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 139 !!! Valor: 14426
+  1431.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 142 !!! Valor: 4122
+  1511.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 150 !!! Valor: 4263
+  1571.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 156 !!! Valor: -31490
+  1581.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 157 !!! Valor: 30877
+  1591.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 158 !!! Valor: 25386
+  1601.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 159 !!! Valor: 16080
+  1611.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 160 !!! Valor: -22413
+  1621.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 161 !!! Valor: -2545
+  1641.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 163 !!! Valor: 4816
+  1681.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 167 !!! Valor: 17898
+  1691.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 168 !!! Valor: 24044
+  1701.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 169 !!! Valor: 29003
+  1711.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 170 !!! Valor: 21419
+  1721.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 171 !!! Valor: 31694
+  1731.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 172 !!! Valor: 23691
+  1741.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 173 !!! Valor: -600
+  1761.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 175 !!! Valor: -1507
+  1781.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 177 !!! Valor: 28101
+  1791.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 178 !!! Valor: 20733
+  1801.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 179 !!! Valor: 1997
+  1821.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 181 !!! Valor: 2868
+  1851.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 184 !!! Valor: 29528
+  1861.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 185 !!! Valor: 2822
+  1941.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 193 !!! Valor: 28268
+  1951.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 194 !!! Valor: 25655
+  1961.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 195 !!! Valor: 20804
+  1971.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 196 !!! Valor: 32145
+  1981.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 197 !!! Valor: 16317
+  1991.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 198 !!! Valor: 19597
+  2001.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 199 !!! Valor: 3658
+  2051.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 204 !!! Valor: -2995
+  2141.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 213 !!! Valor: 20397
+  2151.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 214 !!! Valor: -16671
+  2161.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 215 !!! Valor: 15192
+  2181.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 217 !!! Valor: -28143
+  2191.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 218 !!! Valor: -29097
+  2201.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 219 !!! Valor: -20030
+  2211.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 220 !!! Valor: 15379
+  2241.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 223 !!! Valor: 23578
+  2251.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 224 !!! Valor: -8116
+  2271.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 226 !!! Valor: 6962
+  2291.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 228 !!! Valor: -27818
+  2301.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 229 !!! Valor: -6983
+  2351.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 234 !!! Valor: -11148
+  2411.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 240 !!! Valor: 26666
+  2421.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 241 !!! Valor: 11346
+  2501.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 249 !!! Valor: 16474
+  2511.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 250 !!! Valor: 25773
+  2521.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 251 !!! Valor: 12600
+  2601.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 259 !!! Valor: 19569
+  2611.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 260 !!! Valor: 19223
+  2621.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 261 !!! Valor: -382
+  2641.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 263 !!! Valor: 8459
+  2671.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 266 !!! Valor: 29351
+  2681.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 267 !!! Valor: 31601
+  2691.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 268 !!! Valor: 31982
+  2701.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 269 !!! Valor: 21200
+  2711.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 270 !!! Valor: 29334
+  2721.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 271 !!! Valor: -10946
+  2751.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 274 !!! Valor: 30497
+  2761.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 275 !!! Valor: 21441
+  2771.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 276 !!! Valor: 23203
+  2781.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 277 !!! Valor: 15257
+  2811.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 280 !!! Valor: 17264
+  2821.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 281 !!! Valor: 32023
+  2831.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 282 !!! Valor: 23952
+  2841.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 283 !!! Valor: 13895
+  2971.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 296 !!! Valor: 29800
+  2981.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 297 !!! Valor: 28325
+  2991.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 298 !!! Valor: 23595
+  3001.00ns INFO     cocotb.filter                      !!! OVERFLOW DETECTADO en ciclo 299 !!! Valor: 21323
+  3001.00ns INFO     cocotb.filter                      Gráfico guardado en 'verification_progress.png'
+  3001.00ns INFO     cocotb.regression                  test_fir_ml_regressor.fir_ml_test passed
+  3001.00ns INFO     cocotb.regression                  *******************************************************************************************
+                                                        ** TEST                               STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        *******************************************************************************************
+                                                        ** test_fir_ml_regressor.fir_ml_test   PASS        3001.00           1.19       2514.75  **
+                                                        *******************************************************************************************
+                                                        ** TESTS=1 PASS=1 FAIL=0 SKIP=0                    3001.00           1.19       2512.31  **
+                                                        *******************************************************************************************
+make[1]: Leaving directory '/home/riacosta/Documents/uvm_ver/ML_cocotb'

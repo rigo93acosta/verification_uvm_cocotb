@@ -1,0 +1,62 @@
+rm -f results.xml
+"make" -f Makefile results.xml
+make[1]: Entering directory '/home/riacosta/Documents/uvm_ver/ML_cocotb'
+mkdir -p sim_build
+/usr/bin/iverilog -o sim_build/sim.vvp -s filter -g2012 -f sim_build/cmds.f  filter.v
+/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb_tools/makefiles/simulators/Makefile.icarus:66: Using MODULE is deprecated, please use COCOTB_TEST_MODULES instead.
+rm -f results.xml
+COCOTB_TEST_MODULES=test_fir_ml_memory COCOTB_TESTCASE= COCOTB_TEST_FILTER= COCOTB_TOPLEVEL=filter TOPLEVEL_LANG=verilog \
+         /usr/bin/vvp -M /home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/libs -m libcocotbvpi_icarus   sim_build/sim.vvp   
+     -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:93   in _embed_init_python              Using Python 3.12.4 interpreter at /home/riacosta/Documents/uvm_ver/.venv/bin/python
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:79   in gpi_print_registered_impl       VPI registered
+     0.00ns INFO     cocotb                             Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb                             Seeding Python random module with 1769949367
+     0.00ns INFO     cocotb                             Initialized cocotb v2.0.1 from /home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb
+     0.00ns INFO     cocotb                             Running tests
+     0.00ns INFO     cocotb.regression                  running test_fir_ml_memory.fir_ml_test (1/1)
+                                                            Testbench que utiliza Machine Learning con memoria temporal (Sliding Window)
+     0.00ns INFO     cocotb.filter                      Iniciando Testbench Asistido por ML (Temporal)...
+    10.00ns INFO     cocotb.filter                      Reset completado.
+    10.00ns INFO     cocotb.filter                      Coeficientes fijados en: [80, 80, 80]
+    21.00ns INFO     cocotb.filter                      Progreso: 0/600 | Max Mag: 2400 | Overflows: 0
+   241.00ns INFO     cocotb.filter                      [CICLO 22] OVERFLOW! Val: 20240 | Input Seq: [66, 69, 118]
+   251.00ns INFO     cocotb.filter                      [CICLO 23] OVERFLOW! Val: 19600 | Input Seq: [110, 66, 69]
+   261.00ns INFO     cocotb.filter                      [CICLO 24] OVERFLOW! Val: 23600 | Input Seq: [119, 110, 66]
+   271.00ns INFO     cocotb.filter                      [CICLO 25] OVERFLOW! Val: 10720 | Input Seq: [-95, 119, 110]
+   301.00ns INFO     cocotb.filter                      [CICLO 28] OVERFLOW! Val: -15280 | Input Seq: [-39, -78, -74]
+   521.00ns INFO     cocotb.filter                      Progreso: 50/600 | Max Mag: 23600 | Overflows: 9
+  1021.00ns INFO     cocotb.filter                      Progreso: 100/600 | Max Mag: 26000 | Overflows: 47
+  1071.00ns INFO     cocotb.filter                      [CICLO 105] OVERFLOW! Val: 28640 | Input Seq: [np.int64(121), np.int64(117), np.int64(120)]
+  1521.00ns INFO     cocotb.filter                      Progreso: 150/600 | Max Mag: 30720 | Overflows: 86
+  1661.00ns INFO     cocotb.filter                      [CICLO 164] OVERFLOW! Val: -30240 | Input Seq: [np.int64(-128), np.int64(-126), np.int64(-124)]
+  2021.00ns INFO     cocotb.filter                      Progreso: 200/600 | Max Mag: 30720 | Overflows: 129
+  2281.00ns INFO     cocotb.filter                      [CICLO 226] OVERFLOW! Val: -30320 | Input Seq: [np.int64(-127), np.int64(-126), np.int64(-126)]
+  2521.00ns INFO     cocotb.filter                      Progreso: 250/600 | Max Mag: 30720 | Overflows: 174
+  2811.00ns INFO     cocotb.filter                      [CICLO 279] OVERFLOW! Val: -30480 | Input Seq: [np.int64(-128), np.int64(-128), np.int64(-125)]
+  3021.00ns INFO     cocotb.filter                      Progreso: 300/600 | Max Mag: 30720 | Overflows: 221
+  3381.00ns INFO     cocotb.filter                      [CICLO 336] OVERFLOW! Val: -29360 | Input Seq: [np.int64(-123), np.int64(-117), np.int64(-127)]
+  3521.00ns INFO     cocotb.filter                      Progreso: 350/600 | Max Mag: 30720 | Overflows: 262
+  3911.00ns INFO     cocotb.filter                      [CICLO 389] OVERFLOW! Val: -30400 | Input Seq: [np.int64(-125), np.int64(-127), np.int64(-128)]
+  4021.00ns INFO     cocotb.filter                      Progreso: 400/600 | Max Mag: 30720 | Overflows: 311
+  4491.00ns INFO     cocotb.filter                      [CICLO 447] OVERFLOW! Val: 29920 | Input Seq: [np.int64(125), np.int64(123), np.int64(126)]
+  4521.00ns INFO     cocotb.filter                      Progreso: 450/600 | Max Mag: 30720 | Overflows: 353
+  5021.00ns INFO     cocotb.filter                      Progreso: 500/600 | Max Mag: 30720 | Overflows: 395
+  5101.00ns INFO     cocotb.filter                      [CICLO 508] OVERFLOW! Val: -30480 | Input Seq: [np.int64(-126), np.int64(-128), np.int64(-127)]
+  5521.00ns INFO     cocotb.filter                      Progreso: 550/600 | Max Mag: 30720 | Overflows: 435
+  5711.00ns INFO     cocotb.filter                      [CICLO 569] OVERFLOW! Val: -20320 | Input Seq: [np.int64(-121), -7, np.int64(-126)]
+  6011.00ns INFO     cocotb.filter                      =============================================
+  6011.00ns INFO     cocotb.filter                      SIMULACIÓN FINALIZADA
+  6011.00ns INFO     cocotb.filter                      Total Ciclos: 600
+  6011.00ns INFO     cocotb.filter                      Total Overflows encontrados: 477
+  6011.00ns INFO     cocotb.filter                      Magnitud Máxima alcanzada: 30720
+  6011.00ns INFO     cocotb.filter                      Generando gráfico de aprendizaje...
+  6011.00ns INFO     cocotb.filter                      Gráfico guardado exitosamente como: ml_learning_curve.png
+  6011.00ns INFO     cocotb.regression                  test_fir_ml_memory.fir_ml_test passed
+  6011.00ns INFO     cocotb.regression                  ****************************************************************************************
+                                                        ** TEST                            STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        ****************************************************************************************
+                                                        ** test_fir_ml_memory.fir_ml_test   PASS        6011.00           1.68       3574.26  **
+                                                        ****************************************************************************************
+                                                        ** TESTS=1 PASS=1 FAIL=0 SKIP=0                 6011.00           1.68       3570.29  **
+                                                        ****************************************************************************************
+make[1]: Leaving directory '/home/riacosta/Documents/uvm_ver/ML_cocotb'

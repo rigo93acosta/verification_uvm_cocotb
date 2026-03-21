@@ -1,0 +1,189 @@
+rm -f results.xml
+"make" -f Makefile results.xml
+make[1]: Entering directory '/home/riacosta/Documents/uvm_ver/ML_cocotb'
+mkdir -p sim_build
+/usr/bin/iverilog -o sim_build/sim.vvp -s filter -g2012 -f sim_build/cmds.f  filter.v
+/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb_tools/makefiles/simulators/Makefile.icarus:66: Using MODULE is deprecated, please use COCOTB_TEST_MODULES instead.
+rm -f results.xml
+COCOTB_TEST_MODULES=test_fir_random COCOTB_TESTCASE= COCOTB_TEST_FILTER= COCOTB_TOPLEVEL=filter TOPLEVEL_LANG=verilog \
+         /usr/bin/vvp -M /home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/libs -m libcocotbvpi_icarus   sim_build/sim.vvp   
+     -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:93   in _embed_init_python              Using Python 3.12.4 interpreter at /home/riacosta/Documents/uvm_ver/.venv/bin/python
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:79   in gpi_print_registered_impl       VPI registered
+     0.00ns INFO     cocotb                             Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb                             Seeding Python random module with 1769949355
+     0.00ns INFO     cocotb                             Initialized cocotb v2.0.1 from /home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb
+     0.00ns INFO     cocotb                             Running tests
+     0.00ns INFO     cocotb.regression                  running test_fir_random.fir_random_test (1/1)
+                                                            Testbench de verificación estándar con estimulación aleatoria pura.
+     0.00ns INFO     cocotb.filter                      ============================================================
+     0.00ns INFO     cocotb.filter                      Testbench de Verificación ESTÁNDAR (Random)
+     0.00ns INFO     cocotb.filter                      ============================================================
+    10.00ns INFO     cocotb.filter                      Reset completado.
+    10.00ns INFO     cocotb.filter                      Coeficientes fijados en: [80, 80, 80]
+    10.00ns INFO     cocotb.filter                      Iniciando 600 iteraciones con estimulación ALEATORIA...
+--- Logging error ---
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/logging/__init__.py", line 1160, in emit
+    msg = self.format(record)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/logging.py", line 367, in format
+    lines[0] = prefix + lines[0]
+                        ~~~~~^^^
+IndexError: list index out of range
+Call stack:
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 146, in _sim_react
+    self._event_loop()
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 209, in _event_loop
+    self._resume_task(task, exc)
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 404, in _resume_task
+    trigger = task._advance(exc)
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/task.py", line 266, in _advance
+    trigger = self._coro.send(None)
+  File "/home/riacosta/Documents/uvm_ver/ML_cocotb/test_fir_random.py", line 90, in fir_random_test
+    dut._log.info("")
+Message: ''
+Arguments: ()
+    21.00ns INFO     cocotb.filter                      [Ciclo   0] Nuevo máximo:  8880 (input= 111)
+    51.00ns INFO     cocotb.filter                      [Ciclo   3] Nuevo máximo: 12160 (input= -99)
+    91.00ns INFO     cocotb.filter                      [Ciclo   7] Nuevo máximo: 21680 (input= -68)
+   101.00ns INFO     cocotb.filter                      [Ciclo   8] Nuevo máximo: 23120 (input=-109)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/logging/__init__.py", line 1160, in emit
+    msg = self.format(record)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/logging.py", line 367, in format
+    lines[0] = prefix + lines[0]
+                        ~~~~~^^^
+IndexError: list index out of range
+Call stack:
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 146, in _sim_react
+    self._event_loop()
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 209, in _event_loop
+    self._resume_task(task, exc)
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 404, in _resume_task
+    trigger = task._advance(exc)
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/task.py", line 266, in _advance
+    trigger = self._coro.send(None)
+  File "/home/riacosta/Documents/uvm_ver/ML_cocotb/test_fir_random.py", line 130, in fir_random_test
+    dut._log.info("")
+Message: ''
+Arguments: ()
+   101.00ns INFO     cocotb.filter                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   101.00ns INFO     cocotb.filter                        PRIMER OVERFLOW detectado en ciclo 8
+   101.00ns INFO     cocotb.filter                        Valor: -23120, Magnitud: 23120
+   101.00ns INFO     cocotb.filter                        Input que lo causó: -109
+   101.00ns INFO     cocotb.filter                      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+--- Logging error ---
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/logging/__init__.py", line 1160, in emit
+    msg = self.format(record)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/logging.py", line 367, in format
+    lines[0] = prefix + lines[0]
+                        ~~~~~^^^
+IndexError: list index out of range
+Call stack:
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 146, in _sim_react
+    self._event_loop()
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 209, in _event_loop
+    self._resume_task(task, exc)
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 404, in _resume_task
+    trigger = task._advance(exc)
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/task.py", line 266, in _advance
+    trigger = self._coro.send(None)
+  File "/home/riacosta/Documents/uvm_ver/ML_cocotb/test_fir_random.py", line 136, in fir_random_test
+    dut._log.info("")
+Message: ''
+Arguments: ()
+   111.00ns INFO     cocotb.filter                      [Ciclo   9] Overflow #2: mag=17600
+   121.00ns INFO     cocotb.filter                      [Ciclo  10] Overflow #3: mag=12240
+   161.00ns INFO     cocotb.filter                      [Ciclo  14] Overflow #4: mag=22480
+   171.00ns INFO     cocotb.filter                      [Ciclo  15] Overflow #5: mag=19200
+   651.00ns INFO     cocotb.filter                      [Ciclo  63] Nuevo máximo: 23840 (input=  73)
+  1881.00ns INFO     cocotb.filter                      [Ciclo 186] Nuevo máximo: 23920 (input= -69)
+  2841.00ns INFO     cocotb.filter                      [Ciclo 282] Nuevo máximo: 25520 (input=-122)
+  3051.00ns INFO     cocotb.filter                      [Ciclo 303] Nuevo máximo: 25760 (input=-124)
+  3751.00ns INFO     cocotb.filter                      [Ciclo 373] Overflow #50: mag=16880
+  5921.00ns INFO     cocotb.filter                      [Ciclo 590] Nuevo máximo: 26800 (input= 125)
+  5941.00ns INFO     cocotb.filter                      [Ciclo 592] Nuevo máximo: 27440 (input= 125)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/logging/__init__.py", line 1160, in emit
+    msg = self.format(record)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/logging.py", line 367, in format
+    lines[0] = prefix + lines[0]
+                        ~~~~~^^^
+IndexError: list index out of range
+Call stack:
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 146, in _sim_react
+    self._event_loop()
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 209, in _event_loop
+    self._resume_task(task, exc)
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 404, in _resume_task
+    trigger = task._advance(exc)
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/task.py", line 266, in _advance
+    trigger = self._coro.send(None)
+  File "/home/riacosta/Documents/uvm_ver/ML_cocotb/test_fir_random.py", line 145, in fir_random_test
+    dut._log.info("")
+Message: ''
+Arguments: ()
+  6011.00ns INFO     cocotb.filter                      ============================================================
+  6011.00ns INFO     cocotb.filter                      RESULTADOS DE VERIFICACIÓN ESTÁNDAR (RANDOM)
+  6011.00ns INFO     cocotb.filter                      ============================================================
+  6011.00ns INFO     cocotb.filter                      Total de Ciclos:              600
+  6011.00ns INFO     cocotb.filter                      Total de Overflows:           77
+  6011.00ns INFO     cocotb.filter                      Tasa de Overflow:             12.83%
+  6011.00ns INFO     cocotb.filter                      Magnitud Máxima Alcanzada:    27440
+  6011.00ns INFO     cocotb.filter                      Primer Overflow en Ciclo:     8
+  6011.00ns INFO     cocotb.filter                      Coeficientes usados:          [80, 80, 80]
+  6011.00ns INFO     cocotb.filter                      ============================================================
+  6011.00ns INFO     cocotb.filter                      Gráfico guardado como: random_verification_curve.png
+--- Logging error ---
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/logging/__init__.py", line 1160, in emit
+    msg = self.format(record)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/logging.py", line 367, in format
+    lines[0] = prefix + lines[0]
+                        ~~~~~^^^
+IndexError: list index out of range
+Call stack:
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 146, in _sim_react
+    self._event_loop()
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 209, in _event_loop
+    self._resume_task(task, exc)
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/_scheduler.py", line 404, in _resume_task
+    trigger = task._advance(exc)
+  File "/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/cocotb/task.py", line 266, in _advance
+    trigger = self._coro.send(None)
+  File "/home/riacosta/Documents/uvm_ver/ML_cocotb/test_fir_random.py", line 202, in fir_random_test
+    dut._log.info("")
+Message: ''
+Arguments: ()
+  6011.00ns INFO     cocotb.filter                      Simulación COMPLETADA
+  6011.00ns INFO     cocotb.regression                  test_fir_random.fir_random_test passed
+  6011.00ns INFO     cocotb.regression                  *****************************************************************************************
+                                                        ** TEST                             STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        *****************************************************************************************
+                                                        ** test_fir_random.fir_random_test   PASS        6011.00           0.62       9647.47  **
+                                                        *****************************************************************************************
+                                                        ** TESTS=1 PASS=1 FAIL=0 SKIP=0                  6011.00           0.63       9614.07  **
+                                                        *****************************************************************************************
+make[1]: Leaving directory '/home/riacosta/Documents/uvm_ver/ML_cocotb'
