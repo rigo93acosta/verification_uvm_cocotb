@@ -1,0 +1,8 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1770005849" />
+    <testcase name="test_mult_random_forest" classname="test_mult_rf" file="/home/riacosta/Documents/uvm_ver/ml_random_forest/test_mult_rf.py" lineno="154" time="3.8025195598602295" sim_time_ns="5500.0" ratio_time="1446.409390778299" />
+    <testcase name="test_edge_cases" classname="test_mult_rf" file="/home/riacosta/Documents/uvm_ver/ml_random_forest/test_mult_rf.py" lineno="352" time="0.0007328987121582031" sim_time_ns="8.0" ratio_time="10915.560182173065" />
+    <testcase name="test_exhaustive_small" classname="test_mult_rf" file="/home/riacosta/Documents/uvm_ver/ml_random_forest/test_mult_rf.py" lineno="390" time="0.008766651153564453" sim_time_ns="256.0" ratio_time="29201.572586347567" />
+  </testsuite>
+</testsuites>
