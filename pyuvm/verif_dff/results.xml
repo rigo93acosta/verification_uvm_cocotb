@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1773969522" />
+    <testcase name="DFFTest" classname="test_dff" file="/home/riacosta/Documents/uvm_ver/.venv/lib/python3.12/site-packages/pyuvm/extension_classes.py" lineno="187" time="0.006900787353515625" sim_time_ns="215.0" ratio_time="31155.865118850194" />
+  </testsuite>
+</testsuites>
