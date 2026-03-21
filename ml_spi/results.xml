@@ -1,0 +1,9 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1770012366" />
+    <testcase name="test_ml_sequence_generation" classname="test_spi_ml" file="/home/riacosta/Documents/uvm_ver/ml_spi/test_spi_ml.py" lineno="376" time="0.7698190212249756" sim_time_ns="115290.0" ratio_time="149762.47250495918" />
+    <testcase name="test_corner_case_coverage" classname="test_spi_ml" file="/home/riacosta/Documents/uvm_ver/ml_spi/test_spi_ml.py" lineno="531" time="0.07631516456604004" sim_time_ns="11620.0" ratio_time="152263.31576530277" />
+    <testcase name="test_transition_coverage" classname="test_spi_ml" file="/home/riacosta/Documents/uvm_ver/ml_spi/test_spi_ml.py" lineno="572" time="0.05640006065368652" sim_time_ns="8740.000000000015" ratio_time="154964.3723553112" />
+    <testcase name="test_sequential_slave" classname="test_spi_ml" file="/home/riacosta/Documents/uvm_ver/ml_spi/test_spi_ml.py" lineno="658" time="0.047823190689086914" sim_time_ns="7300.0" ratio_time="152645.6075977765" />
+  </testsuite>
+</testsuites>
