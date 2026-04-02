@@ -9,11 +9,13 @@ module top(input clk1,clk2,
     y <= a + b;
   end
 
-  initial
-  begin
-    $dumpfile("dump.vcd");
-    $dumpvars(1,top);
-  end
+  // Comentar o borrar para que
+  // cocotb lo genere automáticamente
+  // initial
+  // begin
+  //   $dumpfile("dump.vcd");
+  //   $dumpvars(1,top);
+  // end
 
 
 endmodule

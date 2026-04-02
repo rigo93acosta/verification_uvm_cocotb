@@ -36,7 +36,7 @@ async def clk2(dut):
     ltime = 10
     pshift = 3
     dut.clk2.value = 0
-    #await Timer(pshift, 'ns')
+    await Timer(pshift, 'ns')
     while True:
         dut.clk2.value = 1
         await Timer(htime, 'ns')
