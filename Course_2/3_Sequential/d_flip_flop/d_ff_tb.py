@@ -7,7 +7,7 @@ from cocotb.utils import get_sim_time
 from cocotb.clock import Clock
 
 
-async def rst_stimuli(dut):
+async def apply_reset(dut):
     logging.info("Applying reset to DUT @ %0s", str(get_sim_time("ns")))
     dut.rst.value = 1
     await Timer(100, "ns")
@@ -19,7 +19,7 @@ async def rst_stimuli(dut):
 async def test(dut):
     logging.getLogger().setLevel(logging.INFO)
 
-    cocotb.start_soon(rst_stimuli(dut))
+    cocotb.start_soon(apply_reset(dut))
     cocotb.start_soon(Clock(dut.clk, 20, "ns").start())
 
     await Timer(100, "ns")
@@ -28,8 +28,8 @@ async def test(dut):
     for i in range(10):
         din = random.randint(0, 1)
         dut.din.value = din
-        await RisingEdge(dut.clk)
-        await RisingEdge(dut.clk)
+        await dut.clk.rising_edge
+        await dut.clk.rising_edge
         logging.info("Din: %0d and Dout : %0d", din, dut.dout.value)
         if dut.dout.value != din:
             err += 1

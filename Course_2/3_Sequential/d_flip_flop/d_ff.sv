@@ -12,12 +12,4 @@ module top(
       dout <= din;
   end
 
-
-  initial
-  begin
-    $dumpfile("d_ff.vcd");
-    $dumpvars(1,top);
-  end
-
-
 endmodule
