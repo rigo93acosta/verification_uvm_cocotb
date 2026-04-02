@@ -1,7 +1,6 @@
 import cocotb
 import logging
 from cocotb.triggers import Timer
-from cocotb.triggers import RisingEdge, FallingEdge, Edge, ClockCycles
 from cocotb.utils import get_sim_time
 
 #fixed duration rst - 2 pos edge clk ,
