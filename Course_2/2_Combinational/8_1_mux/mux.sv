@@ -28,11 +28,4 @@ module mux(
     endcase
   end
 
-
-  initial
-  begin
-    $dumpfile("mux.vcd");
-    $dumpvars(1,mux);
-  end
-
 endmodule
