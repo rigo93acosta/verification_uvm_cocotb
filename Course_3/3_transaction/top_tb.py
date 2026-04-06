@@ -1,7 +1,7 @@
 import cocotb
 import random
 
-from cocotb.triggers import Timer, RisingEdge, ClockCycles, Event
+from cocotb.triggers import Timer, Event
 from cocotb.clock import Clock
 from cocotb.queue import Queue
 
@@ -25,7 +25,7 @@ class driver():
     async def read(self):
         while True:
             temp = await self.queue.get()
-            await RisingEdge(self.clk)
+            await self.clk.rising_edge
             cocotb.log.info(f"[RD] : received new data : {temp}")
             cocotb.log.info(f"-----------------------------------")
             self.event.set()
