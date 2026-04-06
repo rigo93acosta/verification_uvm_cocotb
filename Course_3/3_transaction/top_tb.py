@@ -19,8 +19,9 @@ class driver():
             data = random.randint(0, 15)
             cocotb.log.info(f"[WR] : sent new data : {data}")
             await self.queue.put(data)
-            await self.event.wait()
             self.event.clear()
+            await self.event.wait()
+            
 
     async def read(self):
         while True:
