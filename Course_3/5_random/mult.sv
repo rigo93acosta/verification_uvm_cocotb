@@ -6,11 +6,4 @@ module mul
 
   assign y = a * b;
 
-
-  initial
-  begin
-    $dumpfile("mult.vcd");
-    $dumpvars;
-  end
-
 endmodule
