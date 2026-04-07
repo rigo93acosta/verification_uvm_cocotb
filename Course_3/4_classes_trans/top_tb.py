@@ -6,7 +6,7 @@ from cocotb.triggers import Timer, RisingEdge, ClockCycles, Event
 from cocotb.clock import Clock
 from cocotb.queue import Queue
 
-class prod():
+class Producer():
 
     def __init__(self, count, event, queue):
         self.count = count
@@ -22,7 +22,7 @@ class prod():
             await self.event.wait()
             self.event.clear()
 
-class cons():
+class Consumer():
 
     def __init__(self, clk, event, queue):
         self.clk = clk
@@ -33,7 +33,7 @@ class cons():
 
         while True:
             temp = await self.queue.get()
-            await RisingEdge(self.clk)
+            await self.clk.rising_edge
             cocotb.log.info(f"[RD] : {self.__class__.__name__.upper()} : received new data : {temp}")
             cocotb.log.info("-----------------------------------")
             self.event.set()
@@ -44,8 +44,8 @@ async def test(dut):
     event = Event()
     queue = Queue()
 
-    producer = prod(10, event, queue)
-    consumer = cons(dut.clk, event, queue)
+    producer = Producer(10, event, queue)
+    consumer = Consumer(dut.clk, event, queue)
 
     cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
     cocotb.start_soon(producer.write())
