@@ -6,8 +6,7 @@ from cocotb.queue import Queue
 from cocotb.utils import get_sim_time
 
 
-class transaction(Randomized):
-
+class Transaction(Randomized):
     def __init__(self, a=0, b=0, y=0):
         Randomized.__init__(self)  # Custom Constructor
         self.a = a
@@ -23,8 +22,7 @@ class transaction(Randomized):
         self.add_constraint(lambda b: b < 10)
 
 
-class generator:
-
+class Generator:
     def __init__(self, queue, event, count):  # Custom Constructor
         self.queue = queue
         self.event = event
@@ -33,7 +31,7 @@ class generator:
 
     async def gen_data(self):  # Main task
         for i in range(self.count):
-            t = transaction()
+            t = Transaction()
             t.randomize()
             cocotb.log.info(f"[GEN]: a: {t.a} b: {t.b} i: {i}")
             await self.queue.put(t)  # put transaction in queue
@@ -44,15 +42,15 @@ class generator:
             f"[GEN]: Generation Complete - {self.count} transactions generated"
         )
 
-class driver:
 
-    def __init__(self, queue, dut): # Custom Constructor
+class Driver:
+    def __init__(self, queue, dut):  # Custom Constructor
         self.queue = queue
         self.dut = dut
 
     async def recv_data(self):  # Main task
         while True:
-            temp = transaction()
+            temp = Transaction()
             temp = await self.queue.get()  # get transaction from queue
             cocotb.log.info(f"[DRV]: a: {temp.a} b: {temp.b}")
 
@@ -63,18 +61,18 @@ class driver:
             await self.dut.clk.rising_edge  # wait for clock edge
             await self.dut.clk.rising_edge
 
-class monitor:
 
+class Monitor:
     def __init__(self, dut, queue):  # Custom Constructor
         self.dut = dut
         self.queue = queue
 
     async def sample_data(self):  # Main task
         while True:
-            temp = transaction()
+            temp = Transaction()
             await self.dut.clk.falling_edge  # wait for clock edge
-            await self.dut.clk.falling_edge  
-            
+            await self.dut.clk.falling_edge
+
             temp.a = self.dut.a.value.to_unsigned()
             temp.b = self.dut.b.value.to_unsigned()
             temp.y = self.dut.y.value.to_unsigned()
@@ -82,31 +80,31 @@ class monitor:
             await self.queue.put(temp)  # put transaction in queue
             cocotb.log.info(
                 f"[MON]: a: {temp.a} b: {temp.b} y: {temp.y} @ : {str(get_sim_time(unit='ns'))}"
-                )
-            
-class scoreboard:
+            )
 
-    def __init__(self, queue, event):  # Custom Constructor 
-        
+
+class Scoreboard:
+    def __init__(self, queue, event):  # Custom Constructor
+
         self.queue = queue
         self.event = event
 
     async def compare_data(self):  # Main task
 
         while True:
-            
             temp = await self.queue.get()  # get transaction from queue
 
             cocotb.log.info(
                 f"[SCO]: a: {temp.a} b: {temp.b} y: {temp.y} @ : {str(get_sim_time(unit='ns'))}"
-                )
-            
-            if (temp.y == (temp.a + temp.b)):
+            )
+
+            if temp.y == (temp.a + temp.b):
                 cocotb.log.info("[SCO]: PASS")
             else:
                 cocotb.log.error("[SCO]: FAIL")
 
             self.event.set()  # Notify generator
+
 
 @cocotb.test()
 async def top_tb(dut):
@@ -115,13 +113,12 @@ async def top_tb(dut):
     queue1 = Queue()
     queue2 = Queue()
     event = Event()
-    gen = generator(queue1, event, count=10)
-    drv = driver(queue1, dut)
+    gen = Generator(queue1, event, count=10)
+    drv = Driver(queue1, dut)
 
-    mon = monitor(dut, queue2)
-    sco = scoreboard(queue2, event)
+    mon = Monitor(dut, queue2)
+    sco = Scoreboard(queue2, event)
 
-    
     # Clock Generation
     clock = Clock(dut.clk, 10, unit="ns")  # Create
     cocotb.start_soon(clock.start())  # Start clock
