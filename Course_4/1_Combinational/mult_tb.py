@@ -101,13 +101,13 @@ class scoreboard:
             temp.print_out(tag="[SCB]")
             a = temp.a
             b = temp.b
-            
+
             if temp.y == (a * b):
                 cocotb.log.info(f"[SCB] PASS: {a} * {b} = {temp.y}")
             else:
                 cocotb.log.error(f"[SCB] FAIL: {a} * {b} != {temp.y}")
-            
-            cocotb.log.info("=="*40)
+
+            cocotb.log.info("==" * 40)
 
             self.event.set()
 
@@ -128,7 +128,6 @@ async def mult_test(dut):
     drv = driver(dut, queue_drv)
     mon = monitor(dut, queue_mon)
     scb = scoreboard(queue_mon, event)
-       
 
     cocotb.start_soon(gen.gen_data())
     cocotb.start_soon(drv.drive_data())
