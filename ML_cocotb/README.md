@@ -954,25 +954,25 @@ El modelo ML descubre estas condiciones **automáticamente** mediante exploraci�
 
 ## Apéndice de Figuras
 
-### Figura 1: `verification_progress.png`
-Generada por `test_fir_ml_regressor.py`. Muestra la evolución básica de magnitudes sin contexto temporal.
+### Figura 1: `final_comparison_chart.png`
+Comparación de resultados entre los tres enfoques de ML. Muestra la velocidad de convergencia de cada agente.
 
-![verification_progress.png](verification_progress.png)
-
-**Características**:
-- Gráfico simple de línea
-- No incluye umbral de referencia
-- No muestra tendencia suavizada
-
-### Figura 2: `ml_learning_curve.png` ⭐
-Generada por `test_fir_ml_memory.py`. Visualización avanzada del proceso de aprendizaje temporal.
-
-![ml_learning_curve.png](ml_learning_curve.png)
+![final_comparison_chart.png](final_comparison_chart.png)
 
 **Características**:
-- Curva de magnitud instantánea (azul)
-- Línea de umbral de overflow (rojo, 16000)
-- Media móvil (naranja, ventana=20)
+- Comparación de iteraciones necesarias para el primer overflow
+- Tres agentes: Clasificador, Regresor, Temporal
+- Análisis de rendimiento relativo
+
+### Figura 2: `comparison_summary_table.png` ⭐
+Tabla resumida de resultados comparativos entre métodos de verificación.
+
+![comparison_summary_table.png](comparison_summary_table.png)
+
+**Características**:
+- Tabla comparativa de métodos
+- Métricas de convergencia
+- Análisis estadístico de rendimiento
 - Título descriptivo con coeficientes usados
 - Grid para lectura precisa
 
