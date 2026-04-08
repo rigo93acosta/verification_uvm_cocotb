@@ -1,5 +1,5 @@
 import cocotb
-from cocotb.triggers import RisingEdge, FallingEdge, Timer, Event
+from cocotb.triggers import Timer, Event
 from cocotb.clock import Clock
 from cocotb_coverage.crv import Randomized
 from cocotb.queue import Queue
@@ -60,8 +60,8 @@ class driver:
             self.dut.a.value = temp.a
             self.dut.b.value = temp.b
 
-            await RisingEdge(self.dut.clk)  # wait for clock edge
-            await RisingEdge(self.dut.clk)
+            await self.dut.clk.rising_edge  # wait for clock edge
+            await self.dut.clk.rising_edge
 
 class monitor:
 
@@ -72,8 +72,8 @@ class monitor:
     async def sample_data(self):  # Main task
         while True:
             temp = transaction()
-            await FallingEdge(self.dut.clk)  # wait for clock edge
-            await FallingEdge(self.dut.clk)  
+            await self.dut.clk.falling_edge  # wait for clock edge
+            await self.dut.clk.falling_edge  
             
             temp.a = self.dut.a.value.to_unsigned()
             temp.b = self.dut.b.value.to_unsigned()
