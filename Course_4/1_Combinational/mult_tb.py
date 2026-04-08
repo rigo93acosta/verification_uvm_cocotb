@@ -6,7 +6,7 @@ from cocotb.queue import Queue
 # transaction : data members for each input and output port
 
 
-class transaction(Randomized):
+class Transaction(Randomized):
     def __init__(self):
         Randomized.__init__(self)
         self.a = 0
@@ -26,7 +26,7 @@ class transaction(Randomized):
 # generator : creates random transactions for DUT
 
 
-class generator:
+class Generator:
     def __init__(self, queue, event, count):
         self.queue = queue
         self.count = count
@@ -35,7 +35,7 @@ class generator:
 
     async def gen_data(self):
         for _ in range(self.count):
-            t = transaction()
+            t = Transaction()
             t.randomize()
             t.print_in(tag="[GEN]")
             await self.queue.put(t)
@@ -46,14 +46,14 @@ class generator:
 # driver : apply random transactions to DUT
 
 
-class driver:
+class Driver:
     def __init__(self, dut, queue):
         self.dut = dut
         self.queue = queue
 
     async def drive_data(self):
         while True:
-            temp = transaction()
+            temp = Transaction()
             temp = await self.queue.get()
 
             self.dut.a.value = temp.a
@@ -66,7 +66,7 @@ class driver:
 # monitor : collect response of DUT
 
 
-class monitor:
+class Monitor:
     def __init__(self, dut, queue):
         self.dut = dut
         self.queue = queue
@@ -74,7 +74,7 @@ class monitor:
     async def sample_data(self):
         while True:
             await Timer(5, unit="ns")
-            temp = transaction()
+            temp = Transaction()
 
             temp.y = int(self.dut.y.value)
             temp.a = int(self.dut.a.value)
@@ -89,14 +89,14 @@ class monitor:
 # scoreboard : compare with expected data
 
 
-class scoreboard:
+class Scoreboard:
     def __init__(self, queue, event):
         self.queue = queue
         self.event = event
 
     async def compare_data(self):
         while True:
-            temp = transaction()
+            temp = Transaction()
             temp = await self.queue.get()
             temp.print_out(tag="[SCB]")
             a = temp.a
@@ -124,10 +124,10 @@ async def mult_test(dut):
     NUM_TESTS = 10
 
     # Create objects
-    gen = generator(queue_drv, event, NUM_TESTS)
-    drv = driver(dut, queue_drv)
-    mon = monitor(dut, queue_mon)
-    scb = scoreboard(queue_mon, event)
+    gen = Generator(queue_drv, event, NUM_TESTS)
+    drv = Driver(dut, queue_drv)
+    mon = Monitor(dut, queue_mon)
+    scb = Scoreboard(queue_mon, event)
 
     cocotb.start_soon(gen.gen_data())
     cocotb.start_soon(drv.drive_data())
