@@ -1,5 +1,5 @@
 import cocotb
-from cocotb.triggers import Timer, RisingEdge, FallingEdge, Event
+from cocotb.triggers import Timer, Event
 from cocotb.clock import Clock
 from cocotb_coverage.crv import Randomized
 from cocotb.queue import Queue
@@ -60,7 +60,7 @@ class driver:
             self.dut.b.value = temp.b
 
             # Notify generator to proceed
-            await self.dut.clk.rising_edge  
+            await self.dut.clk.rising_edge
             await self.dut.clk.rising_edge
 
             self.event.set()  # Notify generator
@@ -79,8 +79,7 @@ class monitor:
 
             y_val = int(self.dut.y.value)
             cocotb.log.info(
-                f"[MON] y: {int(y_val)} @ : {str(get_sim_time(unit='ns'))}"
-            )
+                f"[MON] y: {int(y_val)} @ : {str(get_sim_time(unit='ns'))}")
             await self.queue.put(y_val)  # put transaction in queue
 
 
@@ -92,14 +91,17 @@ class scoreboard:
         expected = 1
         while True:
             data = await self.queue.get()  # get transaction from queue
-            cocotb.log.info(f"[SCO] y: {int(data)} @ : {str(get_sim_time(unit='ns'))}")
+            cocotb.log.info(
+                f"[SCO] y: {int(data)} @ : {str(get_sim_time(unit='ns'))}")
             if int(data) == expected:
                 cocotb.log.info(
-                    f"[SCO] : Test Passed - Expected: {expected}, Got: {int(data)}"
+                    f"[SCO] : Test Passed - Expected: {
+                        expected}, Got: {int(data)}"
                 )
             else:
                 cocotb.log.error(
-                    f"[SCO] : Test Failed - Expected: {expected}, Got: {int(data)}"
+                    f"[SCO] : Test Failed - Expected: {
+                        expected}, Got: {int(data)}"
                 )
             expected += 1
 
@@ -119,19 +121,14 @@ async def test(dut):
     mon = monitor(dut, analysis_queue)
     sco = scoreboard(analysis_queue)
 
-
     cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
 
     cocotb.start_soon(drv.recv_data())
     cocotb.start_soon(mon.sample_data())
-    cocotb.start_soon(sco.compare_data())    
+    cocotb.start_soon(sco.compare_data())
 
     cocotb.log.info("--- Iniciando Generación de Estímulos ---")
     await gen.gen_data()
 
     await Timer(50, "ns")
     cocotb.log.info("--- Test Completo ---")
-
-
-
-
