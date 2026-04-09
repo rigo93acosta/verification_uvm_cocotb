@@ -1,11 +1,11 @@
 import cocotb
-from cocotb.triggers import RisingEdge, ClockCycles, Event, Timer
+from cocotb.triggers import ClockCycles, Event, Timer
 from cocotb.clock import Clock
 from cocotb_coverage.crv import Randomized
 from cocotb.queue import Queue
 from cocotb.utils import get_sim_time
 
-class transaction(Randomized):
+class Transaction(Randomized):
     def __init__(self, wr = 1, rd = 0, din = 0,dout = 0, empty = 0, full = 0):
         Randomized.__init__(self)
         self.wr    = wr
@@ -26,7 +26,7 @@ class transaction(Randomized):
     def print_out(self, tag = ""):
         cocotb.log.info(f"{tag} wr: {self.wr} rd: {self.rd} din: {int(self.din)} dout: {int(self.dout)} e: {self.empty} f: {self.full}")    
 
-class generator():
+class Generator():
     def __init__(self, queue, event, count):
         self.queue = queue
         self.event = event
@@ -35,14 +35,14 @@ class generator():
 
     async def gen_data(self):
             for i in range(self.count):
-                t = transaction()
+                t = Transaction()
                 t.randomize()
                 t.print_in("[GEN]")
                 await self.queue.put(t)
                 await self.event.wait()
                 self.event.clear()
 
-class driver():
+class Driver():
 
     def __init__(self, queue, dut):
         self.queue = queue
@@ -61,7 +61,7 @@ class driver():
 
     async def recv_data(self):
         while True:
-            temp = transaction()
+            temp = Transaction()
             temp = await self.queue.get()
             temp.print_in('[DRV]')  
             self.dut.din.value = temp.din
@@ -69,26 +69,26 @@ class driver():
             self.dut.rd.value = temp.rd
             
             
-            await RisingEdge(self.dut.clk)
+            await self.dut.clk.rising_edge
             self.dut.wr.value = 0
             self.dut.rd.value = 0
-            await RisingEdge(self.dut.clk)
+            await self.dut.clk.rising_edge
 
-class monitor():
+class Monitor():
     def __init__(self, dut,queue):
         self.dut   = dut
         self.queue = queue
 
     async def sample_data(self):
         while True:
-            temp = transaction()
-            await RisingEdge(self.dut.clk)
+            temp = Transaction()
+            await self.dut.clk.rising_edge
 
             temp.din = self.dut.din.value
             temp.wr = self.dut.wr.value
             temp.rd = self.dut.rd.value
 
-            await RisingEdge(self.dut.clk)
+            await self.dut.clk.rising_edge
             temp.dout = self.dut.dout.value
             temp.full = self.dut.full.value
             temp.empty = self.dut.empty.value
@@ -96,7 +96,7 @@ class monitor():
             await self.queue.put(temp)
             temp.print_out("[MON]")
 
-class scoreboard():
+class Scoreboard():
     def __init__(self,queue,event):
         self.queue = queue
         self.event = event
@@ -141,10 +141,10 @@ async def test(dut):
     event = Event()
     
     # Create objects
-    gen = generator(queue_drv, event, 40)
-    drv = driver(queue_drv, dut)
-    mon = monitor(dut,queue_mon)
-    sco = scoreboard(queue_mon,event)
+    gen = Generator(queue_drv, event, 40)
+    drv = Driver(queue_drv, dut)
+    mon = Monitor(dut,queue_mon)
+    sco = Scoreboard(queue_mon,event)
     
     # Start clock
     cocotb.start_soon(Clock(dut.clk, 10, 'ns').start())
