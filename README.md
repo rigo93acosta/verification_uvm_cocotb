@@ -17,11 +17,14 @@ Puedes instalar las dependencias usando `pip` o `uv` (como se ve en el archivo `
 Además de las bibliotecas de Python, el proyecto requiere las siguientes herramientas del sistema para la simulación de Verilog y visualización de waveforms:
 - **Icarus Verilog** (iverilog): Simulador de Verilog utilizado en los makefiles para compilar y ejecutar las simulaciones.
 - **GTKWave**: Visor de waveforms para analizar los archivos `.vcd` generados durante las simulaciones.
+- **Surfer** (opcional): Visor moderno de waveforms (por ejemplo `.vcd`/`.fst`). Proyecto original: https://github.com/surfer-project/surfer
 
 Asegúrate de instalar estas herramientas en tu sistema. En Ubuntu/Debian, puedes usar:
 ```bash
 sudo apt-get install iverilog gtkwave
 ```
+
+> Nota: Surfer es opcional y no siempre está disponible vía `apt`. Para instalarlo, consulta las instrucciones oficiales del proyecto: https://github.com/surfer-project/surfer
 
 En otras distribuciones de Linux, consulta la documentación oficial de cada herramienta.
 
@@ -61,7 +64,7 @@ Cada proyecto incluye:
 - Archivos `_tb.py`: Testbenches escritos con cocotb.
 - `makefile`: Para compilar y ejecutar simulaciones.
 - `results.xml`: Resultados de las pruebas.
-- `dump.vcd`: Archivos de waveform para análisis.
+- `dump.vcd` (o `.fst`, según simulador): Archivos de waveform para análisis (visibles en GTKWave o Surfer).
 - `sim_build/`: Archivos generados durante la simulación.
 
 ### Course_3
@@ -79,18 +82,34 @@ Cada proyecto incluye:
 - Archivos `_tb.py`: Testbenches escritos con cocotb.
 - `makefile`: Para compilar y ejecutar simulaciones.
 - `results.xml`: Resultados de las pruebas.
-- `dump.vcd`: Archivos de waveform para análisis.
+- `dump.vcd` (o `.fst`, según simulador): Archivos de waveform para análisis (visibles en GTKWave o Surfer).
 - `sim_build/`: Archivos generados durante la simulación.
 
 ### Course_4
 Esta carpeta contiene proyectos especializados de verificación avanzada utilizando patrones UVM-like con cocotb. Cada proyecto incluye una documentación detallada en un archivo Markdown dedicado.
 
-- **p1_mult/**: Verificación de un multiplicador combinacional de 4x4 bits utilizando un testbench estructurado con generador, driver, monitor y scoreboard. [Ver detalles](Course_4/p1_mult/Testbench%20de%20Multiplicador.md)
-- **d_flip_flop/**: Verificación de un D flip-flop síncrono con reset asíncrono utilizando un testbench estructurado con generador, driver, monitor y scoreboard. [Ver detalles](Course_4/d_flip_flop/Testbench%20de%20D%20Flip-Flop.md)
-- **fifo/**: Verificación de un FIFO síncrono utilizando un testbench estructurado con generador, driver, monitor y scoreboard. [Ver detalles](Course_4/fifo/Testbench%20de%20FIFO.md)
-- **spi/**: Verificación de un sistema SPI completo (Master, Slave y comunicación) utilizando un testbench estructurado con énfasis en timing constraints. [Ver detalles](Course_4/spi/Testbench%20de%20SPI%20Master.md)
-- **i2c/**: Verificación de un sistema I2C completo (Master, Slave y comunicación bidireccional) utilizando un testbench estructurado con énfasis en lógica open-drain y pull-ups simuladas. [Ver detalles](Course_4/i2c/Testbench%20de%20I2C.md)
-- **uart/**: Verificación de un sistema UART completo (Transmisor, Receptor y comunicación serial asíncrona) utilizando un testbench estructurado con énfasis en timing de baud rate y sincronización. [Ver detalles](Course_4/uart/Testbench%20de%20UART.md)
+- **1_Combinational/**: Verificación de un multiplicador combinacional 4x4 con testbench estructurado (generator/driver/monitor/scoreboard). [Ver detalles](Course_4/1_Combinational/Test_Multiplicador.md)
+- **2_DFF/**: Verificación de un D flip-flop con testbench estructurado. [Ver detalles](Course_4/2_DFF/Test_DFF.md)
+- **3_FIFO/**: Verificación de un FIFO síncrono con testbench estructurado. [Ver detalles](Course_4/3_FIFO/Test_FIFO.md)
+- **4_SPI/**: Verificación de un sistema SPI (Master + integración Master/Slave). [Ver detalles](Course_4/4_SPI/Test_SPI_Master.md)
+- **5_I2C/**: Verificación de un sistema I2C completo (open-drain + pull-ups). [Ver detalles](Course_4/5_I2C/Test_I2C.md)
+- **6_UART/**: Verificación de un sistema UART completo. [Ver detalles](Course_4/6_UART/Test_UART.md)
+
+#### Nuevo formato de `makefile` (selección por TEST) — ejemplo en `Course_4/4_SPI/`
+
+En algunos proyectos (por ejemplo, `Course_4/4_SPI/`) el `makefile` está diseñado para ejecutar **más de un test cocotb** con el mismo set de fuentes Verilog/SystemVerilog, seleccionando automáticamente el `TOPLEVEL` y los archivos a compilar según el test que quieras correr.
+
+- **Selección de test**: usa `TEST=<modulo_tb>` (sin `.py`).
+	- `make TEST=spi_master_tb` corre el test del master (TOPLEVEL `SPI_MASTER`).
+	- `make TEST=master_slave_tb` corre el test de integración master+slave (TOPLEVEL `master_slave`).
+- **Targets útiles**:
+	- `make help` muestra opciones.
+	- `make test_all` ejecuta ambos tests.
+- **Overrides típicos**:
+	- `make SIM=icarus ...` cambia el simulador (por defecto `icarus`).
+	- `make WAVES=1 ...` habilita dumps de waveforms (si el simulador lo soporta).
+
+Este patrón evita duplicar `makefile`s por test y mantiene centralizada la selección de `TOPLEVEL`/`VERILOG_SOURCES`. Para analizar waveforms, puedes usar GTKWave o Surfer.
 
 ## Cómo Usar
 

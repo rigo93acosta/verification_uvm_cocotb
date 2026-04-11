@@ -227,9 +227,13 @@ Para evitar skew, violaciones de timing y errores de sincronismo, se deben segui
    - Por defecto ejecuta la simulación del SPI Master.
    - Para probar la integración Master-Slave, descomenta las líneas correspondientes en el Makefile (TOPLEVEL := TOP y COCOTB_TEST_MODULES := top_tb).
 4. Revisa los logs en la consola para ver los resultados de las comparaciones (Match/Mismatch).
-5. Visualiza el archivo `waveform.vcd` o `waveform.png` en gtkwave para analizar las formas de onda:
+5. Visualiza el archivo `waveform.vcd` (o `waveform.png`) en GTKWave o Surfer para analizar las formas de onda:
    ```bash
    gtkwave waveform.vcd
+   ```
+   o
+   ```bash
+   surfer waveform.vcd
    ```
    ![Waveform](waveform.png "Waveform SPI Master")
 
@@ -240,7 +244,7 @@ Para evitar skew, violaciones de timing y errores de sincronismo, se deben segui
 - Cocotb-bus >= 0.3.0
 - Cocotb-coverage >= 2.0 (para randomización con crv)
 - Icarus Verilog (para simulación HDL)
-- Gtkwave (para visualizar archivos VCD)
+- GTKWave o Surfer (para visualizar archivos VCD/FST). Surfer: https://github.com/surfer-project/surfer
 
 
 ## Próximos Pasos

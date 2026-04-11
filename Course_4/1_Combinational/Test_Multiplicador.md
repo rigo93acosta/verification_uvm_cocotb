@@ -60,7 +60,7 @@ Esto asegura que el monitor no intente convertir valores no resueltos a enteros,
 1. Asegúrate de tener el entorno virtual activado: `source .venv/bin/activate` (usando uv).
 2. En el directorio del proyecto: `cd Proyect/p1_mult`
 3. Ejecuta: `make`
-4. Revisa los logs en la consola y el archivo `*.vcd` para ver los resultados en gtkwave.
+4. Revisa los logs en la consola y el archivo `*.vcd` para ver los resultados en GTKWave o Surfer.
 
 ## Dependencias
 
@@ -69,6 +69,6 @@ Esto asegura que el monitor no intente convertir valores no resueltos a enteros,
 - Cocotb-bus >= 0.3.0
 - Cocotb-coverage >= 2.0
 - Icarus Verilog (para simulación HDL)
-- Gtkwave (para visualizar archivos VCD)
+- GTKWave o Surfer (para visualizar archivos VCD/FST). Surfer: https://github.com/surfer-project/surfer
 
 Este setup permite una verificación automatizada y reproducible del multiplicador.

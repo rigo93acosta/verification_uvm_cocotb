@@ -580,7 +580,13 @@ Esto funciona pero no es tan realista ni escalable para múltiples dispositivos 
    gtkwave waveform_i2c.vcd
    ```
 
-### Señales Clave para Observar en GTKWave
+  o
+
+  ```bash
+  surfer waveform_i2c.vcd
+  ```
+
+### Señales Clave para Observar en GTKWave / Surfer
 
 - **sda**: Línea de datos bidireccional. Observa cambios solo cuando `scl` está bajo (excepto START/STOP).
 - **scl**: Reloj I2C generado por Master. Debe oscilar a ~100 kHz durante transacciones.
@@ -596,7 +602,7 @@ Esto funciona pero no es tan realista ni escalable para múltiples dispositivos 
 - Cocotb >= 2.0.1
 - Cocotb-coverage >= 2.0 (para randomización con `Randomized`)
 - Icarus Verilog (para simulación HDL)
-- GTKWave (para visualizar archivos VCD)
+- GTKWave o Surfer (para visualizar archivos VCD/FST). Surfer: https://github.com/surfer-project/surfer
 
 ## Resultado Esperado
 

@@ -51,10 +51,15 @@ test_sequential:
 # View waveforms
 .PHONY: waves
 waves:
-	@if [ -f dump.vcd ]; then \
-		gtkwave dump.vcd; \
+	@VIEWER=$$(command -v surfer >/dev/null 2>&1 && echo surfer || echo gtkwave); \
+	if ! command -v $$VIEWER >/dev/null 2>&1; then \
+		echo "No waveform viewer found (install surfer or gtkwave)"; \
+		exit 1; \
+	fi; \
+	if [ -f dump.vcd ]; then \
+		$$VIEWER dump.vcd; \
 	elif [ -f dump.fst ]; then \
-		gtkwave dump.fst; \
+		$$VIEWER dump.fst; \
 	else \
 		echo "No waveform file found"; \
 	fi

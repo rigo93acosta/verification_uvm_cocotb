@@ -821,7 +821,7 @@ done:     ───────────────────────�
 - Esperado: ~104 µs.
 - Tolerancia: ±1% (~103-105 µs).
 
-**En GTKWave**:
+**En GTKWave / Surfer**:
 - Seleccionar señal `uart_tx_inst.uclk`.
 - Medir distancia entre flancos ascendentes consecutivos.
 - Verificar: `período = 2 × clkcount × período_clk = 2 × 52 × 1 µs = 104 µs`.
@@ -897,7 +897,7 @@ done:     ───────────────────────�
 - **Alineación de muestreo**: RX debe muestrear en el centro del bit (52 µs después del inicio).
 
 **Herramientas**:
-- GTKWave: Medir tiempos con cursores.
+- GTKWave / Surfer: Medir tiempos con cursores.
 - Logs de Cocotb: `get_sim_time(unit='us')` para timestamp de eventos.
 
 ## Problemas Encontrados y Soluciones
@@ -995,7 +995,13 @@ for i in range(8):
    gtkwave waveform_uart.vcd
    ```
 
-### Señales Clave para Observar en GTKWave
+  o
+
+  ```bash
+  surfer waveform_uart.vcd
+  ```
+
+### Señales Clave para Observar en GTKWave / Surfer
 
 - **clk**: Reloj del sistema (1 MHz, período = 1 µs).
 - **uart_tx_inst.uclk**: Reloj UART del TX (período = 104 µs).
@@ -1016,7 +1022,7 @@ for i in range(8):
 - Cocotb >= 2.0.1
 - Cocotb-coverage >= 2.0 (para randomización con `Randomized`)
 - Icarus Verilog (para simulación HDL)
-- GTKWave (para visualizar archivos VCD)
+- GTKWave o Surfer (para visualizar archivos VCD/FST). Surfer: https://github.com/surfer-project/surfer
 
 ## Resultado Esperado
 

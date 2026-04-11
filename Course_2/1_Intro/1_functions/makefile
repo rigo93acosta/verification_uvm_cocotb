@@ -8,7 +8,11 @@ COCOTB_WAVEFORM_VIEWER ?= gtkwave
 GUI ?= 1
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
-# Abre gtkwave después de la simulación
+# Abre Surfer (o GTKWave) después de la simulación
 .PHONY: view
 view:
-	@surfer sim_build/$(TOPLEVEL).fst &
+	@if command -v surfer >/dev/null 2>&1; then \
+		surfer sim_build/$(TOPLEVEL).fst & \
+	else \
+		$(COCOTB_WAVEFORM_VIEWER) sim_build/$(TOPLEVEL).fst & \
+	fi
