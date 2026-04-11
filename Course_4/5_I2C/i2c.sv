@@ -1,7 +1,7 @@
-`include "i2c_slave.sv"
-`include "i2c_master.sv"
+`include "i2c_s.sv"
+`include "i2c_m.sv"
 
-module I2C (
+module i2c (
     input            clk,
     input            rst,
     input           newd,
@@ -21,7 +21,7 @@ module I2C (
   pullup(sda);
   pullup(scl);
 
-  I2C_M master (
+  i2c_m master (
     .clk     (clk),
     .rst     (rst),
     .newd    (newd),
@@ -36,7 +36,7 @@ module I2C (
     .done    (done)
   );
 
-  I2C_S slave (
+  i2c_s slave (
     .scl     (scl),
     .clk     (clk),
     .rst     (rst),

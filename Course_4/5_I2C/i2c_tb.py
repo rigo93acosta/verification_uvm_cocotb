@@ -74,7 +74,7 @@ class driver:
         tr.print_in("[DRV]")
         await ClockCycles(self.dut.clk, 5)
         self.dut.newd.value = 0
-        await RisingEdge(self.dut.done)
+        await self.dut.done.rising_edge
 
     async def rd_op(self, tr):
         self.dut.rst.value = 0
@@ -84,7 +84,7 @@ class driver:
         self.dut.op.value = 1
         await ClockCycles(self.dut.clk, 5)
         self.dut.newd.value = 0
-        await RisingEdge(self.dut.done)
+        await self.dut.done.rising_edge
         tr.dout = self.dut.dout.value
         tr.print_out("[DRV]")
 
@@ -106,7 +106,7 @@ class monitor:
     async def sample_data(self):
         while True:
             temp = transaction()
-            await RisingEdge(self.dut.done)
+            await self.dut.done.rising_edge
             temp.din = self.dut.din.value
             temp.op = self.dut.op.value
             temp.addr = self.dut.addr.value
@@ -149,8 +149,10 @@ class scoreboard:
 
 
 @cocotb.test()
-async def test_I2C(dut):
-    
+async def i2c_tb(dut):
+    """
+    Testbench para el módulo I2C.
+    """
     
 
     gen_queue = Queue()
