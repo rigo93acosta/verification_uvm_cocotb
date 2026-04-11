@@ -4,11 +4,13 @@ SIM ?= icarus
 # VERILOG_SOURCES = $(shell pwd)/spi_my.sv # My implementation file
 TOPLEVEL := SPI # Verilog or SystemVerilog TOP file module name
 # Then using master & slave testbenches descommented
-VERILOG_SOURCES += $(shell pwd)/top.sv
-TOPLEVEL := TOP
-# COCOTB_TEST_MODULES   := spi_tb # Python file name
+VERILOG_SOURCES += $(shell pwd)/SPI_MASTER.sv
+#VERILOG_SOURCES += $(shell pwd)/top.sv
+TOPLEVEL := SPI_MASTER
+# TOPLEVEL := TOP
+COCOTB_TEST_MODULES   := spi_master_tb # Python file name
 # Then using master & slave testbenches descommented
-COCOTB_TEST_MODULES   := top_tb # Python file name
+# COCOTB_TEST_MODULES   := top_tb # Python file name
 WAVES := 1
 
 include $(shell cocotb-config --makefiles)/Makefile.sim

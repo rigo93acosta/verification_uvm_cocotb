@@ -117,9 +117,10 @@ class scoreboard:
 
 
 @cocotb.test()
-async def spi_test(dut):
-
-    cocotb.log.info("Starting SPI UVM-like Testbench")
+async def spi_master(dut):
+    """
+    SPI UVM-like Testbench in Cocotb
+    """
 
     # Queues and Events
     drv_queue = Queue()
@@ -146,5 +147,3 @@ async def spi_test(dut):
 
     # Wait for all transactions to complete
     await Timer(15000, "ns")
-    cocotb.log.info("All transactions completed, ending test")
-    cocotb.log.info("SPI UVM-like Testbench Completed")
