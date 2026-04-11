@@ -1,7 +1,4 @@
-`include "spi_my.sv"
-`include "spi_slave.sv"
-
-module TOP (
+module master_slave (
     input          clk,
     input          rst,
     input         newd,
@@ -14,7 +11,7 @@ module TOP (
   wire        mosi;
   wire         cs;
 
-  SPI spi_master (
+  SPI_MASTER spi_master (
         .clk   (clk),
         .rst   (rst),
         .newd (newd),

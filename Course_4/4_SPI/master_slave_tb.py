@@ -105,9 +105,10 @@ class scoreboard():
             self.event.set()
 
 @cocotb.test()
-async def spi_test(dut):
-
-    cocotb.log.info("Starting SPI Master-Slave Testbench")
+async def spi_master_slave_test(dut):
+    """
+    Testbench for SPI Master-Slave communication.
+    """
 
     # Queues and Events
     drv_queue = Queue()
