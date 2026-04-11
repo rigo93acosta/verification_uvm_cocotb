@@ -17,14 +17,14 @@ Puedes instalar las dependencias usando `pip` o `uv` (como se ve en el archivo `
 Además de las bibliotecas de Python, el proyecto requiere las siguientes herramientas del sistema para la simulación de Verilog y visualización de waveforms:
 - **Icarus Verilog** (iverilog): Simulador de Verilog utilizado en los makefiles para compilar y ejecutar las simulaciones.
 - **GTKWave**: Visor de waveforms para analizar los archivos `.vcd` generados durante las simulaciones.
-- **Surfer** (opcional): Visor moderno de waveforms (por ejemplo `.vcd`/`.fst`). Proyecto original: https://github.com/surfer-project/surfer
+- **Surfer** (opcional): Visor moderno de waveforms (por ejemplo `.vcd`/`.fst`). Proyecto original: https://gitlab.com/surfer-project/surfer
 
 Asegúrate de instalar estas herramientas en tu sistema. En Ubuntu/Debian, puedes usar:
 ```bash
 sudo apt-get install iverilog gtkwave
 ```
 
-> Nota: Surfer es opcional y no siempre está disponible vía `apt`. Para instalarlo, consulta las instrucciones oficiales del proyecto: https://github.com/surfer-project/surfer
+> Nota: Surfer es opcional y no siempre está disponible vía `apt`. Para instalarlo, consulta las instrucciones oficiales del proyecto: https://gitlab.com/surfer-project/surfer
 
 En otras distribuciones de Linux, consulta la documentación oficial de cada herramienta.
 
