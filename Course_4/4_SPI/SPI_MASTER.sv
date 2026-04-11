@@ -28,7 +28,7 @@ module SPI_MASTER (
     end
     else if (cs == 1'b0) // only toggle sclk when CS is low
     begin
-      if (countc < 10) countc <= countc + 1;
+      if (countc < 9) countc <= countc + 1;
       else begin
         countc <= 0;
         sclk   <= ~sclk;
@@ -41,7 +41,7 @@ module SPI_MASTER (
 
   // state machine
   reg [11:0] temp;
-  wire sclk_edge = (countc == 10 && sclk == 1'b1);
+  wire sclk_edge = (countc == 9 && sclk == 1'b1);
   // Warning skew: sclk_edge must be used with care to avoid timing issues
   always @(posedge clk) begin : FSM_SPI
     if (rst == 1'b1) begin

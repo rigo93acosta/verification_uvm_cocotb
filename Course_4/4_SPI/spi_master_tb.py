@@ -60,9 +60,9 @@ class driver:
             temp.print_in("[DRV]")
             self.dut.din.value = temp.din  # apply newdata
             self.dut.newd.value = 1
-            await RisingEdge(self.dut.sclk)
+            await self.dut.sclk.rising_edge
             self.dut.newd.value = 0
-            await RisingEdge(self.dut.cs)  # wait for completion of oper
+            await self.dut.cs.rising_edge  # wait for completion of oper
 
 
 class monitor:
@@ -78,14 +78,14 @@ class monitor:
             """
             dout = 0
             temp = transaction()
-            await FallingEdge(self.dut.cs)  # wait for start of oper
+            await self.dut.cs.falling_edge  # wait for start of oper
             temp.din = self.dut.din.value
-            await RisingEdge(self.dut.sclk)  # sync to sclk
+            await self.dut.sclk.rising_edge  # sync to sclk
             for i in range(12):
-                await RisingEdge(self.dut.sclk)
+                await self.dut.sclk.rising_edge
                 dout = (dout << 1) | int(self.dut.mosi.value)
 
-            await RisingEdge(self.dut.cs)  # wait for end of oper
+            await self.dut.cs.rising_edge  # wait for end of oper
             temp.dout = dout
             await self.queue.put(temp)
             cocotb.log.info(f"[MON] din: {temp.din.to_unsigned()} : dout = {temp.dout}")
