@@ -13,4 +13,8 @@ COCOTB_TEST_MODULES   := spi_master_tb # Python file name
 # COCOTB_TEST_MODULES   := top_tb # Python file name
 WAVES := 1
 
+# Note (Surfer): Icarus dumps enum values as bits in .fst.
+# To display `state_type` as text in Surfer, use the mapping translator in:
+#   .surfer/mappings/spi_master_state.map
+
 include $(shell cocotb-config --makefiles)/Makefile.sim

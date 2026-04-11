@@ -1,0 +1,10 @@
+# Mapping translator for SPI_MASTER state_type enum
+# Place under .surfer/mappings/ so Surfer can display the FSM state as text.
+
+Name = SPI_MASTER state
+Bits = 2
+
+0b00 idle
+0b01 enable
+0b10 send
+0b11 comp
