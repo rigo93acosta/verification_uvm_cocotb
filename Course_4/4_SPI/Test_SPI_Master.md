@@ -82,6 +82,12 @@ El testbench para el Master sigue un flujo de verificación estructurado similar
    - Espera el falling edge de `cs` (inicio de operación).
    - Captura el valor de `din` actual.
    - Sincroniza con rising edges de `sclk` para reconstruir los 12 bits transmitidos en `mosi`, reconstruyendo `dout` mediante shift left y OR.
+      - Es importante tener en cuenta lo siguiente, en el monitor esta secuencia:
+      ```Python
+      await self.dut.cs.falling_edge (arranca la operación)
+      await self.dut.sclk.rising_edge (sync)
+      ```
+      - “Descarta” el primer rising_edge porque todavía no hay un bit nuevo/correcto en mosi para muestrear en ese flanco. La causa exacta de hacerlo de esta forma, es que el DUT recién asigna mosi cuando ocurre sclk_edge (que en el diseño queda alineado con el período alto / cerca del flanco de bajada), por lo tanto el primer bit válido aparece después del primer rising.
    - Espera el rising edge de `cs` (fin de operación) y envía la transacción completa al scoreboard.
 
 5. **Scoreboard**: Compara los datos transmitidos (`din`) con los datos recibidos/reconstruidos (`dout`).
