@@ -1,0 +1,15 @@
+# Mapping translator for I2C_SLAVE state_type enum
+# Place under .surfer/mappings/ so Surfer can display the FSM state as text.
+
+Name = I2C_SLAVE state
+Bits = 4
+
+0b0000 idle
+0b0001 read_addr
+0b0010 send_ack1
+0b0011 send_data
+0b0100 master_ack
+0b0101 read_data
+0b0110 send_ack2
+0b0111 wait_p
+0b1000 detect_stop

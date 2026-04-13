@@ -23,7 +23,6 @@ module i2c_m (
   parameter clk_count1 = clk_count4 / 4;  /// 100
 
   integer       count1 = 0;
-  reg           i2c_clk = 0;
 
   /// 4x clock
   reg     [1:0] pulse = 0;
@@ -55,7 +54,7 @@ module i2c_m (
   end
 
   ///////
-  reg [3:0] bitcount = 0;
+  reg [3:0] bitcount = 0; 
   reg [7:0] data_addr = 0;
   reg [7:0] data_tx = 0;
   reg       r_ack = 0;
@@ -183,8 +182,8 @@ module i2c_m (
             2: begin
               scl_t <= 1'b1;
               sda_t <= 1'b0;
-              //   r_ack <= sda; // This generates Z in simulation
-              r_ack <= 1'b0;  // Force ack for simulation purposes
+              r_ack <= sda; // This generates Z in simulation
+              //r_ack <= 1'b0;  // Force ack for simulation purposes
             end  ///recv ack from slave
             3: begin
               scl_t <= 1'b1;
@@ -218,11 +217,11 @@ module i2c_m (
             case (pulse)
               0: begin
                 scl_t <= 1'b0;
+                sda_t  <= data_tx[7-bitcount];
               end
               1: begin
                 scl_t  <= 1'b0;
                 sda_en <= 1'b1;
-                sda_t  <= data_tx[7-bitcount];
               end
               2: begin
                 scl_t <= 1'b1;
@@ -326,8 +325,8 @@ module i2c_m (
               scl_t <= 1'b1;
               sda_t <= 1'b0;
               // The next line generates Z in simulation
-              //   r_ack <= sda; ///recv ack from slave
-              r_ack <= 1'b0;  // Force ack for simulation purposes
+              r_ack <= sda; ///recv ack from slave
+              //r_ack <= 1'b0;  // Force ack for simulation purposes
             end
             3: begin
               scl_t <= 1'b1;
@@ -385,7 +384,7 @@ module i2c_m (
     end
   end
 
-  assign sda  = (sda_en == 1) ? (sda_t == 0) ? 1'b0 : 1'bz : 1'bz;
+  assign sda  = (sda_en == 1) ? ((sda_t == 0) ? 1'b0 : 1'bz) : 1'bz;
   assign scl  = scl_t;
   assign dout = rx_data;
 
