@@ -602,7 +602,7 @@ Esto funciona pero no es tan realista ni escalable para múltiples dispositivos 
 - Cocotb >= 2.0.1
 - Cocotb-coverage >= 2.0 (para randomización con `Randomized`)
 - Icarus Verilog (para simulación HDL)
-- GTKWave o Surfer (para visualizar archivos VCD/FST). Surfer: https://github.com/surfer-project/surfer
+- GTKWave o Surfer (para visualizar archivos VCD/FST). Surfer: https://gitlab.com/surfer-project/surfer
 
 ## Resultado Esperado
 
