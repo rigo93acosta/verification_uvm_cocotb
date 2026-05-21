@@ -1,0 +1,64 @@
+Questa Altera Starter FPGA Edition-64 qrun 2025.2 Utility 2025.05 May 31 2025
+Start time: 23:48:58 on May 20,2026
+qrun -c -64 -outdir sim_build -makelib work /home/riacosta/Documents/verification_uvm_cocotb/Course_2/1_Intro/3_clock/top_clock.sv -timescale 1ns/1ps -mfcu -end -access=rw+/. -onfinish exit -pli "/home/riacosta/Documents/verification_uvm_cocotb/.venv/lib/python3.12/site-packages/cocotb/libs/libcocotbvpi_modelsim.so" -do "vcd file sim_build/waves.vcd; vcd add -r /*; run -all; quit" -sv -top work.top  
+** Note: (qrun-220) '/mnt/3E9407EC9407A58D/Verification/altera/25.1std/questa_fse/linux_x86_64/../modelsim.ini' is used as the ini file.
+Questa Altera Starter FPGA Edition-64 vlog 2025.2 Compiler 2025.05 May 31 2025
+Start time: 23:48:58 on May 20,2026
+vlog -64 -sv -timescale 1ns/1ps -mfcu /home/riacosta/Documents/verification_uvm_cocotb/Course_2/1_Intro/3_clock/top_clock.sv -work sim_build/work -statslog sim_build/stats_log -csession=incr -csessiondir sim_build/sessions 
+** Note: (vlog-220) '/mnt/3E9407EC9407A58D/Verification/altera/25.1std/questa_fse/linux_x86_64/../modelsim.ini' is used as the ini file.
+-- Compiling module top
+
+Top level modules:
+	top
+End time: 23:48:58 on May 20,2026, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+-- Skipping vopt
+# ** Note: (vsim-220) '/mnt/3E9407EC9407A58D/Verification/altera/25.1std/questa_fse/linux_x86_64/../modelsim.ini' is used as the ini file.
+# vsim -c -64 -onfinish exit -pli "/home/riacosta/Documents/verification_uvm_cocotb/.venv/lib/python3.12/site-packages/cocotb/libs/libcocotbvpi_modelsim.so" -lib sim_build/work -do "vcd file sim_build/waves.vcd; vcd add -r /*; run -all; quit" -statslog sim_build/stats_log qrun_opt -appendlog -l qrun.log 
+# Start time: 23:48:58 on May 20,2026
+# //  Questa Altera Starter FPGA Edition-64
+# //  Version 2025.2 linux_x86_64 May 31 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading sv_std.std
+# Loading work.top(fast)
+# Loading /home/riacosta/Documents/verification_uvm_cocotb/.venv/lib/python3.12/site-packages/cocotb/libs/libcocotbvpi_modelsim.so
+#      -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:93   in _embed_init_python              Using Python 3.12.4 interpreter at /home/riacosta/Documents/verification_uvm_cocotb/.venv/bin/python
+#      -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:79   in gpi_print_registered_impl       VPI registered
+# vcd file sim_build/waves.vcd
+#  vcd add -r /*
+#  run -all
+#      0.00ns INFO     cocotb                             Running on ModelSim for Questa Altera Starter FPGA Edition-64 version 2025.1 2025.05
+#      0.00ns INFO     cocotb                             Seeding Python random module with 1779331738
+#      0.00ns INFO     cocotb                             Initialized cocotb v2.0.1 from /home/riacosta/Documents/verification_uvm_cocotb/.venv/lib/python3.12/site-packages/cocotb
+#      0.00ns INFO     cocotb                             Running tests
+#      0.00ns INFO     cocotb.regression                  running top_tb.top_tb (1/1)
+#                                                             Testbench for clock generator
+#    100.00ns INFO     cocotb.regression                  top_tb.top_tb passed
+#    100.00ns INFO     cocotb.regression                  **************************************************************************************
+#                                                         ** TEST                          STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+#                                                         **************************************************************************************
+#                                                         ** top_tb.top_tb                  PASS         100.00           0.07       1497.47  **
+#                                                         **************************************************************************************
+#                                                         ** TESTS=1 PASS=1 FAIL=0 SKIP=0                100.00           0.07       1483.00  **
+#                                                         **************************************************************************************
+# ** Note: $finish    : UNKNOWN(-1)
+#    Time: 100 ns  Iteration: 0  Instance: /top
+# End time: 23:48:59 on May 20,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+End time: 23:48:59 on May 20,2026, Elapsed time: 0:00:01
+*** Summary *********************************************
+    qrun: Errors:   0, Warnings:   0
+    vlog: Errors:   0, Warnings:   0
+    vsim: Errors:   0, Warnings:   0
+  Totals: Errors:   0, Warnings:   0

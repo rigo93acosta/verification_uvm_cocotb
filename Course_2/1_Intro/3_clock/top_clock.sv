@@ -5,9 +5,11 @@ module top (
     input clk3
 );
 
-initial begin
-    $dumpfile("clocks.vcd");
-    $dumpvars(1, top);
-end
-    
+  // Use WAVES := 1
+  // initial begin
+  //     $dumpfile("clocks.vcd");
+  //     $dumpvars(1, top);
+  // end
+
 endmodule
+
