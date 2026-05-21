@@ -241,3 +241,9 @@ if __name__ == "__main__":
 - `test_module` debe ser el nombre del archivo Python sin extension.
 - Para multiples tests, correlos en ejecuciones separadas o usa un runner que itere modulos.
 - Si el simulador no genera ondas, desactiva `waves`.
+
+
+## Skills de AI
+
+En la carpeta runner-cocotb se ha generado una skill con template para crear runners personalizados. Esto permite a los usuarios generar scripts de runner adaptados a sus necesidades especificas, como agregar opciones de simulacion, configurar entornos de prueba, o integrar con sistemas de CI/CD. La skill puede ser utilizada para acelerar el desarrollo de runners y asegurar consistencia en la ejecucion de pruebas Cocotb.
+
