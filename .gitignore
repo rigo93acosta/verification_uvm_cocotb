@@ -11,3 +11,6 @@ wheels/
 sim_build/
 html_res/
 *.xml
+*.log
+*.vcd
+*.fst
