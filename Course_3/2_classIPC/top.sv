@@ -1,11 +1,5 @@
 module top(
-  );
-
-  initial
-  begin
-    $dumpfile("classIPC.vcd");
-    $dumpvars(1,top);
-  end
-
+  input logic clk // Add for verilator to recognize this as a valid module
+);
 
 endmodule
