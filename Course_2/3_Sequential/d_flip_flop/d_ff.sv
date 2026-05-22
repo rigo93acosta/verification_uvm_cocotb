@@ -1,15 +1,13 @@
-module top(
-    input      rst,clk,
+module d_ff (
+    input      rst,
+    clk,
     input      din,
     output reg dout
-  );
+);
 
-  always@(posedge clk)
-  begin
-    if(rst == 1'b1)
-      dout <= 1'b0;
-    else
-      dout <= din;
+  always @(posedge clk) begin
+    if (rst == 1'b1) dout <= 1'b0;
+    else dout <= din;
   end
 
 endmodule
