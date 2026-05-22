@@ -1,0 +1,11 @@
+# Leer el archivo SystemVerilog
+read_verilog -sv dff.sv
+
+# Declarar el módulo principal (Top)
+hierarchy -check -top dff
+
+# Optimizar y mapear a celdas genéricas de Yosys
+synth -top dff
+
+# Generar el archivo netlist de salida
+write_verilog dff_synth.v
