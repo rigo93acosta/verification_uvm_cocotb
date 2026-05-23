@@ -1,5 +1,4 @@
 import cocotb
-import random
 
 from cocotb.triggers import Timer
 from cocotb_coverage.crv import Randomized
@@ -83,7 +82,7 @@ async def test(dut):
 
         t.randomize()
         # t.randomize_with(lambda a, b: a + b == 4)
-        cocotb.log.info(f"Test {i}: a={t.a}, b={t.b}, c={t.c}")
+        cocotb.log.info(f"Test {i:02d}: a={t.a:02d}, b={t.b:02d}, c={t.c:02d}")
         await Timer(10, unit='ns')
         cocotb.log.info("---------------------")
     
@@ -96,7 +95,7 @@ async def test(dut):
     for i in range(10):
 
         tB.randomize()
-        cocotb.log.info(f"TestB {i}: a={tB.a}, a_range={tB.a_range}")
+        cocotb.log.info(f"TestB {i:02d}: a={tB.a:02d}, a_range={tB.a_range}")
         await Timer(10, unit='ns')
         cocotb.log.info("---------------------")
 
@@ -110,10 +109,10 @@ async def test(dut):
     mid = 0
     high = 0
 
-    for i in range(100):
+    for i in range(10):
 
         tC.randomize()
-        cocotb.log.info(f"TestC {i}: b={tC.b}, b_range={tC.b_range}")
+        cocotb.log.info(f"TestC {i:02d}: b={tC.b:02d}, b_range={tC.b_range}")
         await Timer(10, unit='ns')
         cocotb.log.info("---------------------")
 
@@ -124,6 +123,6 @@ async def test(dut):
         elif tC.b_range >= 90:
             high += 1
 
-    cocotb.log.info(f"Low: {low}, Mid: {mid}, High: {high}")
+    cocotb.log.info(f"Low: {low:02d}, Mid: {mid:02d}, High: {high:02d}")
 
     
