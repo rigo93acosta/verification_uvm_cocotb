@@ -1,5 +1,5 @@
 import cocotb
-from cocotb.triggers import Timer, Event
+from cocotb.triggers import ClockCycles, Event
 from cocotb.clock import Clock
 from cocotb_coverage.crv import Randomized
 from cocotb.queue import Queue
@@ -20,6 +20,7 @@ class transaction(Randomized):
         # Constrains
         self.add_constraint(lambda a: a < 10)
         self.add_constraint(lambda b: b < 10)
+        self.add_constraint(lambda a, b: a != b)
 
 
 class generator:
@@ -33,7 +34,9 @@ class generator:
         for i in range(self.count):
             t = transaction()
             t.randomize()
-            cocotb.log.info(f"[GEN]: a: {t.a} b: {t.b} i: {i}")
+            cocotb.log.info(f"[GEN]: a: {t.a:02d} b: {t.b:02d} i: {i:02d}")
+            if t.a == t.b:
+                raise RuntimeError("constraint violada: a == b")
             await self.queue.put(t)  # put transaction in queue
             await self.event.wait()  # wait for event from driver
             self.event.clear()
@@ -49,19 +52,19 @@ class driver:
         self.dut = dut
         self.event = event
 
-    async def recv_data(self):  # Main task
+    async def send_data(self):  # Main task
         while True:
             temp = transaction()
             temp = await self.queue.get()  # get transaction from queue
-            cocotb.log.info(f"[DRV]: a: {temp.a} b: {temp.b}")
-
-            # Apply values to DUT
-            self.dut.a.value = temp.a
-            self.dut.b.value = temp.b
+            cocotb.log.info(f"[DRV]: a: {temp.a:02d} b: {temp.b:02d}")
 
             # Notify generator to proceed
             await self.dut.clk.rising_edge
             await self.dut.clk.rising_edge
+
+            # Apply values to DUT
+            self.dut.a.value = temp.a
+            self.dut.b.value = temp.b
 
             self.event.set()  # Notify generator
 
@@ -77,9 +80,8 @@ class monitor:
             await self.dut.clk.falling_edge
             await self.dut.clk.falling_edge
 
-            y_val = int(self.dut.y.value)
-            cocotb.log.info(
-                f"[MON] y: {int(y_val)} @ : {str(get_sim_time(unit='ns'))}")
+            y_val = self.dut.y.value.to_unsigned()
+            cocotb.log.info(f"[MON]: y: {y_val:02d} @ : {str(get_sim_time(unit='ns'))}")
             await self.queue.put(y_val)  # put transaction in queue
 
 
@@ -91,17 +93,14 @@ class scoreboard:
         expected = 1
         while True:
             data = await self.queue.get()  # get transaction from queue
-            cocotb.log.info(
-                f"[SCO] y: {int(data)} @ : {str(get_sim_time(unit='ns'))}")
-            if int(data) == expected:
+            cocotb.log.info(f"[SCO]: y: {data:02d} @ : {str(get_sim_time(unit='ns'))}")
+            if data == expected:
                 cocotb.log.info(
-                    f"[SCO] : Test Passed - Expected: {
-                        expected}, Got: {int(data)}"
+                    f"[SCO]: Test Passed - Expected: {expected:02d}, Got: {data:02d}"
                 )
             else:
                 cocotb.log.error(
-                    f"[SCO] : Test Failed - Expected: {
-                        expected}, Got: {int(data)}"
+                    f"[SCO]: Test Failed - Expected: {expected:02d}, Got: {data:02d}"
                 )
             expected += 1
 
@@ -109,13 +108,13 @@ class scoreboard:
 @cocotb.test()
 async def test(dut):
 
-    # Inicialización de colas y eventos
+    # Initialization of queues and events
     stimulus_queue = Queue()
     analysis_queue = Queue()
     handshake_event = Event()
-    num_trans = 12
+    num_trans = 5
 
-    # Instanciación de componentes
+    # Instantiation of components
     gen = generator(stimulus_queue, handshake_event, num_trans)
     drv = driver(stimulus_queue, dut, handshake_event)
     mon = monitor(dut, analysis_queue)
@@ -123,12 +122,20 @@ async def test(dut):
 
     cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
 
-    cocotb.start_soon(drv.recv_data())
-    cocotb.start_soon(mon.sample_data())
+    driver_pros = cocotb.start_soon(drv.send_data())
+    monitor_procs = cocotb.start_soon(mon.sample_data())
     cocotb.start_soon(sco.compare_data())
 
-    cocotb.log.info("--- Iniciando Generación de Estímulos ---")
+    cocotb.log.info("--- Starting Stimulus Generation ---")
     await gen.gen_data()
+    cocotb.log.info("--- Stopping Components ---")
+    driver_pros.cancel()  # Stopping driver
+    monitor_procs.cancel()  # Stopping monitor
 
-    await Timer(50, "ns")
-    cocotb.log.info("--- Test Completo ---")
+    while True:
+        if stimulus_queue.empty() and analysis_queue.empty():
+            cocotb.log.info("Queues empty, finishing test...")
+            break
+        await ClockCycles(dut, 2, "ns")
+
+    cocotb.log.info("--- Test Complete ---")
