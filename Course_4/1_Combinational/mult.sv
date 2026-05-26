@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module mult (
     input  [3:0] a,
     input  [3:0] b,
