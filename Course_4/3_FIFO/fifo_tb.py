@@ -199,7 +199,6 @@ async def test(dut, id, test_type):
     await drv.reset_dut()
 
     # Start coroutines
-
     driver_process = cocotb.start_soon(drv.send_data())
     monitor_process = cocotb.start_soon(mon.sample_data())
     cocotb.start_soon(sco.compare_data())
@@ -216,5 +215,3 @@ async def test(dut, id, test_type):
     monitor_process.cancel()
 
     dut._log.info("Test completed successfully.")
-    # Let the test run for a while
-    # await Timer(820, 'ns')
