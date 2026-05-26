@@ -59,6 +59,19 @@ El timing en la simulación está controlado por flancos de reloj y ciclos de re
 
 Esto asegura que la verificación se sincronice correctamente con el comportamiento secuencial del FIFO, evitando muestreo prematuro o tardío.
 
+## Tests adicionales realizados
+
+Estos casos cubren bordes clasicos y ayudan a validar flags, orden y punteros del FIFO:
+
+- [x] **Full / overflow**: escribir hasta llenar y validar `full=1`; intentar escribir con `full=1` y comprobar que no se pierde ni sobrescribe informacion.
+- [x] **Empty / underflow**: leer hasta vaciar y validar `empty=1`; intentar leer con `empty=1` y verificar que `dout` no cambia o se mantiene estable segun especificacion.
+- [x] **Fill and drain completo**: llenar N elementos y luego leer N; confirma orden FIFO exacto.
+- [ ] **Alternado write/read**: patron escribir/leer intercalado para detectar desalineos de punteros.
+- [ ] **Burst write / burst read**: rafagas largas de escritura seguidas de rafagas largas de lectura; expone problemas de wrap-around.
+- [ ] **Wrap-around**: escribir mas de la profundidad para forzar vuelta de punteros; el orden debe mantenerse.
+- [ ] **Reset en medio**: aplicar reset con datos en cola; al salir, `empty=1`, `full=0` y cola vacia.
+- [ ] **Datos extremos**: probar `din=0` y `din=255` (si 8 bits) para validar limites.
+
 ## Cómo Ejecutar
 
 1. Asegúrate de tener el entorno virtual activado: `source .venv/bin/activate` (usando uv).
