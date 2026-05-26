@@ -6,10 +6,12 @@ Este proyecto implementa un testbench de verificación para un multiplicador dig
 
 ## Archivos en la Carpeta
 
-- **mult_tb.py**: Archivo principal del testbench en Python. Contiene las clases del testbench y la función de prueba principal.
-- **makefile**: Archivo de construcción para compilar y ejecutar la simulación usando Icarus Verilog y Cocotb.
+- **mult_tb.py**: Testbench principal en Python (Cocotb). Contiene las clases `Transaction`, `Generator`, `Driver`, `Monitor` y `Scoreboard`, y la prueba parametrizada `mult_test`.
+- **runner_mult.py**: Script de ayuda que usa `cocotb_tools.runner` para compilar y ejecutar la simulación con distintos backends (verilator, icarus/iverilog, questa/modelsim).
 - **mult.sv**: Módulo Verilog del Device Under Test (DUT), un multiplicador combinacional de 4x4 bits.
-- **mult.vcd**: Archivo de ondas generado por la simulación (creado después de ejecutar).
+- **mult.svg**: Diagrama/imagen del DUT usado en la documentación.
+- **sim_build/**: Carpeta de salida de la build/simulación (creada por el runner/HDL simulator).
+- **__pycache__/**: Caché de Python generado al ejecutar los scripts.
 
 ## Descripción del DUT
 
@@ -45,30 +47,68 @@ El testbench sigue un flujo de verificación estructurado similar a UVM, dividid
 
 El flujo es asíncrono y concurrente, con tareas corriendo en paralelo usando `cocotb.start_soon`.
 
-## Detalles de Timing
+## Detalles de Timing y flujo
 
-El timing en la simulación está controlado por timers de Cocotb para asegurar la sincronización correcta:
+El testbench usa parámetros para controlar el número de pruebas y los delays; no hay un tiempo fijo único. Puntos clave:
 
-- **Driver**: Después de aplicar entradas (a, b), espera `Timer(10, unit="ns")` para permitir que la lógica combinacional se estabilice.
-- **Monitor**: Espera `Timer(5, unit="ns")` al inicio de cada ciclo de muestreo para evitar muestrear valores no inicializados ('x'). Luego, después de muestrear, espera otro `Timer(5, unit="ns")` antes de enviar la transacción (total 10ns por ciclo).
-- **Test Principal**: Corre por `Timer(60, unit="ns")`, suficiente para 10 pruebas (aprox. 6ns por prueba en promedio).
+- **Driver**: aplica `a` y `b` al DUT y espera `Timer(delay, unit="ns")` (el `delay` se pasa como parámetro a la tarea `drive_data`).
+- **Monitor**: muestrea la señal intermedia esperando `delay//2` antes y `delay//2` después para evitar leer valores no inicializados y dar tiempo a estabilización de señales.
+- **Generator / Test**: la prueba `mult_test` está parametrizada con `num_tests` y `delay` (ej.: 10, 50, 100 tests; delays 6, 10, 20 ns). El generador termina al completar `NUM_TESTS` transacciones; el test espera hasta que las colas estén vacías.
 
-Esto asegura que el monitor no intente convertir valores no resueltos a enteros, evitando errores de "LogicArray contains non-0/1 values".
+Esta estructura evita errores por valores 'x' al convertir `LogicArray` a enteros y permite flexibilidad para diferentes simuladores y velocidades.
 
 ## Cómo Ejecutar
 
-1. Asegúrate de tener el entorno virtual activado: `source .venv/bin/activate` (usando uv).
-2. En el directorio del proyecto: `cd Proyect/p1_mult`
-3. Ejecuta: `make`
-4. Revisa los logs en la consola y el archivo `*.vcd` para ver los resultados en GTKWave o Surfer.
+Este repositorio incluye `runner_mult.py` como helper para construir y ejecutar las pruebas con distintos motores de simulación.
+
+Ejemplos:
+
+- Ejecutar con el simulador por defecto (por defecto `verilator`):
+
+```bash
+python3 runner_mult.py
+```
+
+- Elegir simulador (por ejemplo `icarus`/`iverilog` o `questa`):
+
+```bash
+SIM=icarus python3 runner_mult.py
+SIM=questa python3 runner_mult.py
+```
+
+El script usa `cocotb_tools.runner` internamente y generará la carpeta `sim_build/` con los artefactos. Para visualizar ondas, abre el fichero de trazas generado por tu simulador (`.vcd`, `.fst` o `.wlf`) con GTKWave o la herramienta que prefieras.
+
+- Ejecutar los tests usando `pytest` mediante `uv` y seleccionando Questa:
+
+```bash
+SIM=questa uv run pytest -s -q runner_mult.py
+```
 
 ## Dependencias
 
-- Python >= 3.12
-- Cocotb >= 2.0.1
-- Cocotb-bus >= 0.3.0
-- Cocotb-coverage >= 2.0
-- Icarus Verilog (para simulación HDL)
-- GTKWave o Surfer (para visualizar archivos VCD/FST). Surfer: https://github.com/surfer-project/surfer
+- Python 3.8+ (o la versión que uses en el entorno de desarrollo).
+- cocotb (version compatible con tu entorno; cualquier 1.x/2.x reciente debería funcionar).
+- cocotb-coverage (opcional, usado en el test para randomización y cobertura).
+- cocotb_tools (para `runner_mult.py`).
+- Un backend de simulación: `verilator`, `iverilog`/`icarus`, o `questa`/`modelsim` según prefieras.
+- GTKWave (u otra herramienta) para visualizar `.vcd`/`.fst`.
 
-Este setup permite una verificación automatizada y reproducible del multiplicador.
+Instalación rápida (ejemplo con pip):
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Si no tienes `requirements.txt`, instala mínimo:
+
+```bash
+python -m pip install cocotb cocotb-tools cocotb-coverage
+```
+
+Con esto puedes ejecutar `python3 runner_mult.py` y cambiar el backend con la variable de entorno `SIM`.
+
+Este README está actualizado para reflejar los archivos reales y el uso del `runner_mult.py` en esta carpeta.
+
+Nota sobre `uv`:
+
+- Puedes emplear `uv` para crear/gestionar el entorno virtual y ejecutar comandos dentro de él. Por ejemplo, usar `uv run` permite ejecutar `pytest` o `python` dentro del entorno aislado.
