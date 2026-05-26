@@ -7,13 +7,13 @@ Este proyecto implementa un testbench de verificación para un D flip-flop digit
 ## Archivos en la Carpeta
 
 - **dff_tb.py**: Archivo principal del testbench en Python. Contiene las clases del testbench y la función de prueba principal.
-- **makefile**: Archivo de construcción para compilar y ejecutar la simulación usando Icarus Verilog y Cocotb.
+- **runner_dff.py**: Runner de Cocotb que construye y lanza la simulación (usa `cocotb_tools.runner`). Reemplaza el uso antiguo de Makefile.
 - **dff.sv**: Módulo Verilog del Device Under Test (DUT), un D flip-flop síncrono con reset.
-- **dump.vcd**: Archivo de ondas generado por la simulación (creado después de ejecutar).
+- **sim_build/**: Directorio de salida donde los runners colocan artefactos de la simulación (VCD/FST, archivos de build). Algunos scripts también pueden generar `dump.vcd` o `vsim.vcd` dependiendo del simulador.
 
 ## Descripción del DUT
 
-El DUT es un módulo Verilog llamado `dff` que implementa un flip-flop D síncrono con reset asíncrono. La salida `dout` se actualiza en el flanco positivo del reloj `clk` con el valor de `din`, a menos que `rst` esté activo, en cuyo caso `dout` se resetea a 0. Es un circuito secuencial, y se simula usando Icarus Verilog.
+El DUT es un módulo Verilog llamado `dff` que implementa un flip-flop D síncrono con reset asíncrono. La salida `dout` se actualiza en el flanco positivo del reloj `clk` con el valor de `din`, a menos que `rst` esté activo, en cuyo caso `dout` se resetea a 0. Es un circuito secuencial. La simulación la gestiona el runner (`runner_dff.py`) y puede ejecutarse con Verilator, Icarus (Icarus Verilog), Questa/ModelSim u otros simuladores soportados según la configuración de `SIM`.
 
 ### Entity: dff 
 - **File**: dff.sv
@@ -49,18 +49,69 @@ El flujo es asíncrono y concurrente, con tareas corriendo en paralelo usando `c
 
 El timing en la simulación está controlado por flancos de reloj y ciclos de reloj de Cocotb para asegurar la sincronización correcta con el DUT secuencial:
 
-- **Driver**: Aplica reset durante 5 ciclos de reloj. Luego, para cada transacción, establece `din` y espera un flanco de reloj positivo para que el DUT capture el valor. Opcionalmente, limpia `din` después de otro flanco.
-- **Monitor**: Espera flancos de reloj positivos para muestrear `dout` (que se actualiza en el flanco). Muestrea `din` actual y envía la transacción.
-- **Test Principal**: Corre por `Timer(200, unit="ns")`, suficiente para 10 pruebas con un reloj de 10ns de período (aprox. 20 ciclos de reloj).
+- **Driver**: El driver aplica un reset inicial (en el código espera un flanco de reloj, pone `rst=1`, espera 5 ciclos con `ClockCycles(dut.clk, 5)` y luego limpia `rst`). Para cada transacción el driver toma la `din` de la transacción, la aplica en el flanco de bajada (`falling_edge`) y espera el flanco de subida (`rising_edge`) para que el DUT la capture.
 
-Esto asegura que la verificación se sincronice correctamente con el comportamiento secuencial del flip-flop, evitando muestreo prematuro o tardío.
+- **Monitor**: El monitor espera el `rising_edge` y usa `ReadOnly()` para leer señales estables del DUT (`din`, `dout`) después del flanco, empaquetando esos valores en transacciones que envía al `Scoreboard`.
+
+- **Test Principal / Terminación**: El test no depende de un tiempo de simulación fijo. La terminación es impulsada por transacciones:
+	- El `Generator` crea `n_events` transacciones y las coloca en la cola del driver.
+	- El `Scoreboard` consume las transacciones muestreadas por el monitor y, tras procesarlas, notifica mediante un `Event` para continuar.
+	- El test espera a que el generador termine y comprueba que tanto `queue_drv` como `queue_mon` estén vacías; cuando ambas colas están vacías el test cancela los procesos de driver/monitor y finaliza.
+
+	En el código de `dff_tb.py` la señal de reloj se crea con `Clock(dut.clk, 10, 'ns')` (periodo 10 ns), pero esto es sólo el periodo del reloj; la lógica de terminación se basa en colas y eventos, no en un `Timer` fijo.
 
 ## Cómo Ejecutar
 
-1. Asegúrate de tener el entorno virtual activado: `source .venv/bin/activate` (usando uv).
-2. En el directorio del proyecto: `cd Course_4/d_flip_flop`
-3. Ejecuta: `make`
-4. Revisa los logs en la consola y el archivo `dump.vcd` para ver los resultados en GTKWave o Surfer.
+- **Entorno**: activa tu entorno virtual si aún no lo has hecho:
+
+	```bash
+	source .venv/bin/activate
+	```
+
+- **Con `uv`**: si gestionas el entorno con `uv`, puedes ejecutar los tests directamente con:
+
+	```bash
+	uv run pytest
+	```
+
+
+- **Ejecutar con el runner (`runner_dff.py`)**: el repositorio ahora usa `runner_dff.py` para construir y ejecutar la simulación. Desde la carpeta del proyecto ejecuta:
+
+	```bash
+	cd Course_4/2_DFF
+	python runner_dff.py
+	```
+
+	- Por defecto el runner usa `verilator`. Para elegir otro simulador exporta la variable `SIM` antes de ejecutar. Valores soportados: `verilator`, `icarus`/`iverilog`, `questa`/`modelsim`.
+
+	```bash
+	# Usar Icarus (iverilog)
+	SIM=icarus python runner_dff.py
+
+	# Usar Questa/ModelSim
+	SIM=questa python runner_dff.py
+	```
+
+
+- **Ejecutar con `pytest`**: también puedes lanzar el `test_dff` desde `pytest` (el runner declarado en `runner_dff.py` es reconocible como test). Ejemplos:
+
+	```bash
+	# Ejecutar el test de forma explícita
+	pytest -q Course_4/2_DFF/runner_dff.py::test_dff
+
+	# Ejecutar todos los tests en la carpeta
+	pytest -q Course_4/2_DFF
+	```
+
+	Si usas `uv` para gestionar el entorno, antepone `uv run`:
+
+	```bash
+	uv run pytest -q Course_4/2_DFF/runner_dff.py::test_dff
+	# o ejecutar el runner directamente
+	uv run python Course_4/2_DFF/runner_dff.py
+	```
+
+-- **Ver ondas**: los ficheros de ondas se generan en `sim_build/` o con nombres como `dump.vcd`, `vsim.vcd`, `vsim.fst`, o `trace.fst` según el simulador. Abre el fichero VCD/FST con GTKWave o Surfer para inspección.
 
 ## Dependencias
 
