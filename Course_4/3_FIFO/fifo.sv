@@ -16,7 +16,7 @@ module fifo (
   reg [4:0] cnt = 0;
 
   // Memory array to store data
-  reg [7:0] mem[15];
+  reg [7:0] mem[16];
 
   always @(posedge clk) begin
     if (rst == 1'b1) begin

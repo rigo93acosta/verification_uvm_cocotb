@@ -184,7 +184,7 @@ async def test(dut, id, test_type):
         case "random":
             number_of_transactions = 10
         case "fill_and_empty":
-            number_of_transactions = len(dut.mem) * 2  # Fill and then empty
+            number_of_transactions = len(dut.mem) * 2  + 1# Fill and then empty
         case _:
             number_of_transactions = 10
     # Create objects
