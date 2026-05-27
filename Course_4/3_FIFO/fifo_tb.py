@@ -214,4 +214,4 @@ async def test(dut, id, test_type):
     driver_process.cancel()
     monitor_process.cancel()
 
-    dut._log.info("Test completed successfully.")
+    dut._log.info("===== Test completed successfull ====")
