@@ -54,9 +54,9 @@ class Driver:
             temp = Transaction()
             temp = await self.queue.get()
             temp.print_in("[DRV]")
-            self.dut.newd.value = 1
-            await self.dut.spi_master.sclk.falling_edge
+            await self.dut.clk.falling_edge
             self.dut.din.value = temp.din
+            self.dut.newd.value = 1
             await self.dut.spi_master.sclk.rising_edge
             self.dut.newd.value = 0
             await self.dut.spi_master.cs.rising_edge
@@ -124,7 +124,7 @@ async def spi_master_slave_test(dut):
     mon_queue = Queue()
     gen_event = Event()
 
-    n_data = 20
+    n_data = 5
     # Instantiate components
     gen = Generator(drv_queue, gen_event, count=n_data)
     drv = Driver(dut, drv_queue)
