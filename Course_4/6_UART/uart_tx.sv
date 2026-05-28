@@ -1,4 +1,4 @@
-module UART_TX #(
+module uart_tx #(
     parameter clk_freq  = 1000000,
     parameter baud_rate = 9600
 ) (

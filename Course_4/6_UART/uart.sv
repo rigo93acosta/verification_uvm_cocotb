@@ -1,7 +1,7 @@
 `include "uart_tx.sv"
 `include "uart_rx.sv"
 
-module UART #(
+module uart #(
     parameter clk_freq  = 1000000,
     parameter baud_rate = 9600
 ) (
@@ -16,7 +16,7 @@ module UART #(
     output       donerx
 );
 
-  UART_TX #(
+  uart_tx #(
       .clk_freq (clk_freq),
       .baud_rate(baud_rate)
   ) uart_tx_inst (
@@ -28,7 +28,7 @@ module UART #(
       .donetx (donetx)
   );
 
-  UART_RX #(
+  uart_rx #(
       .clk_freq (clk_freq),
       .baud_rate(baud_rate)
   ) uart_rx_inst (
