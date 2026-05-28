@@ -14,3 +14,4 @@ html_res/
 *.log
 *.vcd
 *.fst
+.github/
