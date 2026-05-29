@@ -1,6 +1,7 @@
+import os
 import cocotb
 import random
-from cocotb.triggers import ClockCycles, Event
+from cocotb.triggers import ClockCycles, Event, ReadOnly
 from cocotb.clock import Clock
 from cocotb_coverage.crv import Randomized
 from cocotb.queue import Queue
@@ -34,7 +35,7 @@ class Generator:
             temp = Transaction()
             temp.randomize()
             cocotb.log.info(
-                f"Generated transaction: oper={temp.oper}, dintx={temp.dintx}"
+                f"Generated transaction: oper={temp.oper:03d}, dintx={temp.dintx:03d}"
             )
             await self.queue.put(temp)
             await self.event.wait()
@@ -74,15 +75,13 @@ class Driver:
         self.dut.rst.value = 0
 
     async def data_tx(self, dintx):
-        await self.dut.uart_tx_inst.uclk.rising_edge  # pos edge of tx clock
-        self.dut.rst.value = 0
+        await self.dut.clk.falling_edge
         self.dut.newd.value = 1
-        self.dut.rx.value = 1
         self.dut.dintx.value = dintx
         await self.dut.uart_tx_inst.uclk.rising_edge
         self.dut.newd.value = 0
         await self.queueds.put(dintx)
-        cocotb.log.info(f"[DRV]: Data Transmitted {int(dintx)}")
+        cocotb.log.info(f"[DRV]: Data Transmitted {int(dintx):03d}")
         await self.dut.donetx.rising_edge
 
     async def data_rx(self):
@@ -95,12 +94,13 @@ class Driver:
         for i in range(8):
             self.rx = random.randint(0, 1)
             self.dout = (self.dout << 1) | self.rx
+            await self.dut.clk.falling_edge
             self.dut.rx.value = self.rx
             await self.dut.uart_rx_inst.uclk.rising_edge
 
         self.rout = self.reverse_Bits(self.dout, 8)
         await self.queueds.put(self.rout)
-        cocotb.log.info(f"[DRV]: Data RCVD {int(self.rout)}")
+        cocotb.log.info(f"[DRV]: Data RCVD {int(self.rout):03d}")
         await self.dut.donerx.rising_edge
         self.dut.rx.value = 1
 
@@ -132,7 +132,6 @@ class Monitor:
 
     async def sample_data(self):
         while True:
-            temp = Transaction()
             await self.dut.uart_tx_inst.uclk.rising_edge
             if self.dut.newd.value == 1 and self.dut.rx.value == 1:
                 await self.dut.uart_tx_inst.uclk.rising_edge
@@ -141,15 +140,16 @@ class Monitor:
                     self.dout = (self.dout << 1) | int(self.dut.tx.value)
 
                 self.rout = self.reverse_Bits(self.dout, 8)
-                cocotb.log.info(f"[MON]: TX DATA: {int(self.rout)}")
+                cocotb.log.info(f"[MON]: TX DATA: {int(self.rout):03d}")
                 await self.dut.donetx.rising_edge
                 await self.dut.uart_tx_inst.uclk.rising_edge
                 await self.queuems.put(self.rout)
 
             elif self.dut.rx.value == 0 and self.dut.newd.value == 0:
                 await self.dut.donerx.rising_edge
+                await ReadOnly()
                 self.rout = int(self.dut.doutrx.value)
-                cocotb.log.info(f"[MON]: RX DATA: {int(self.rout)}")
+                cocotb.log.info(f"[MON]: RX DATA: {int(self.rout):03d}")
                 await self.dut.uart_tx_inst.uclk.rising_edge
                 await self.queuems.put(self.rout)
 
@@ -164,7 +164,7 @@ class Scoreboard:
         while True:
             tempd = await self.queueds.get()
             tempm = await self.queuems.get()
-            cocotb.log.info(f"[SCO]: Drv: {int(tempd)} Mon:  {int(tempm)}")
+            cocotb.log.info(f"[SCO]: Drv: {int(tempd):03d} Mon:  {int(tempm):03d}")
 
             if tempd == tempm:
                 cocotb.log.info("[SCO]: Data Matched")
@@ -176,8 +176,14 @@ class Scoreboard:
             self.event.set()
 
 
-@cocotb.test()
-async def test_UART(dut):
+def _get_baud_rate():
+    return int(os.getenv("BAUD_RATE", "9600"))
+
+
+@cocotb.test(name=f"test_uart_{_get_baud_rate()}")
+async def uart_test_tb(dut):
+    cocotb.log.info(f"[TEST]: BAUD_RATE={_get_baud_rate()}")
+
     queuegd = Queue()
     queueds = Queue()
     queuems = Queue()
