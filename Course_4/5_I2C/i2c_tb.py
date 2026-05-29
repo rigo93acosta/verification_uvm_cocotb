@@ -1,12 +1,11 @@
 import cocotb
-from cocotb.triggers import Timer, RisingEdge, FallingEdge, ClockCycles, Event
+from cocotb.triggers import ClockCycles, Event
 from cocotb.clock import Clock
 from cocotb_coverage.crv import Randomized
 from cocotb.queue import Queue
-from cocotb.utils import get_sim_time
 
 
-class transaction(Randomized):
+class Transaction(Randomized):
     def __init__(self):
         Randomized.__init__(self)
         self.newd = 0
@@ -25,25 +24,32 @@ class transaction(Randomized):
         self.add_constraint(lambda din: din < 50)
 
     def print_in(self, tag=""):
-        print(f"{tag} : op={self.op} addr={self.addr} din={self.din}")
+        print(f"{tag} : op={int(self.op):03d} addr={int(self.addr):03d} din={int(self.din):03d}")
 
     def print_out(self, tag=""):
-        print(
-            f"{tag} : op={self.op} addr={self.addr} din={self.din} dout={self.dout}"
-        )
+        print(f"{tag} : op={int(self.op):03d} addr={int(self.addr):03d} din={int(self.din):03d} dout={int(self.dout):03d}")
 
 
-class generator:
+class Generator:
     def __init__(self, queue, event, count):
         self.queue = queue
         self.event = event
         self.count = count
 
-    async def gen_data(self):
+    async def gen_data(self, dir_random=True):
+        
         for i in range(self.count):
-            tr = transaction()
+            tr = Transaction()
             tr.randomize()
-            tr.print_in("GEN")
+            if not dir_random:
+                dir_value = [123, 124, 125, 126, 127]
+                if i < 5:
+                    tr.op = 0  # write operation
+                    tr.addr = dir_value[i]
+                else:
+                    tr.op = 1  # read operation
+                    tr.addr = dir_value[i - 5]
+            tr.print_in("[GEN]")
             await self.queue.put(tr)
             await self.event.wait()
             self.event.clear()
@@ -60,9 +66,9 @@ class driver:
         self.dut.newd.value = 0
         self.dut.addr.value = 0
         self.dut.op.value = 0
-        cocotb.log.info(f"Reset Applied DUT at time {get_sim_time('ns')} ns")
+        cocotb.log.info("===== Reset Applied DUT =====")
         await ClockCycles(self.dut.clk, 5)
-        cocotb.log.info(f"Reset Removed DUT reset at time {get_sim_time('ns')} ns")
+        cocotb.log.info("===== Reset Removed DUT =====")
         self.dut.rst.value = 0
 
     async def wr_op(self, tr):
@@ -90,7 +96,7 @@ class driver:
 
     async def recv_data(self):
         while True:
-            temp = transaction()
+            temp = Transaction()
             temp = await self.queue.get()
             if temp.op == 0:
                 await self.wr_op(temp)
@@ -105,7 +111,7 @@ class monitor:
 
     async def sample_data(self):
         while True:
-            temp = transaction()
+            temp = Transaction()
             await self.dut.done.rising_edge
             temp.din = self.dut.din.value
             temp.op = self.dut.op.value
@@ -149,17 +155,20 @@ class scoreboard:
 
 
 @cocotb.test()
-async def i2c_tb(dut):
+@cocotb.parametrize(
+    ("dir_random", [True, False])
+)
+async def i2c_tb(dut, dir_random):
     """
     Testbench para el módulo I2C.
     """
-    
 
     gen_queue = Queue()
     mon_queue = Queue()
     gen_event = Event()
 
-    gen = generator(gen_queue, gen_event, count=10)
+    n_data = 10
+    gen = Generator(gen_queue, gen_event, count=n_data)
     drv = driver(dut, gen_queue)
     mon = monitor(dut, mon_queue)
     sco = scoreboard(mon_queue, gen_event)
@@ -169,9 +178,23 @@ async def i2c_tb(dut):
 
     await drv.reset_dut()
 
-    cocotb.start_soon(gen.gen_data())
-    cocotb.start_soon(drv.recv_data())
-    cocotb.start_soon(mon.sample_data())
+    generator_process = cocotb.start_soon(gen.gen_data(dir_random))
+    driver_process = cocotb.start_soon(drv.recv_data())
+    monitor_process = cocotb.start_soon(mon.sample_data())
     cocotb.start_soon(sco.compare_data())
 
-    await Timer(640000, 'ns')
+    await generator_process
+    cocotb.log.info("===== Generator process completed =====")
+    while True:
+        if gen_queue.empty() and mon_queue.empty():
+            cocotb.log.info("===== All queues are empty. =====")
+            break
+        await ClockCycles(dut.clk, 1)
+
+    await ClockCycles(dut.clk, 5)
+
+    cocotb.log.info("===== Cancelling driver and monitor processes =====")
+    driver_process.cancel()
+    monitor_process.cancel()
+
+    cocotb.log.info("===== Test completed =====")
