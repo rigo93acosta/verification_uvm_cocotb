@@ -1,13 +1,12 @@
 import cocotb
 import random
-from cocotb.triggers import Timer, RisingEdge, ClockCycles, Event
+from cocotb.triggers import ClockCycles, Event
 from cocotb.clock import Clock
 from cocotb_coverage.crv import Randomized
 from cocotb.queue import Queue
-from cocotb.utils import get_sim_time
 
 
-class transaction(Randomized):
+class Transaction(Randomized):
     def __init__(self):
         super().__init__()
         self.newd = 0
@@ -23,7 +22,7 @@ class transaction(Randomized):
         self.add_rand("oper", [0, 1])  # 0 for RX, 1 for TX
 
 
-class generator:
+class Generator:
     def __init__(self, queue, event, count):
         self.queue = queue
         self.event = event
@@ -32,15 +31,17 @@ class generator:
 
     async def gen_data(self):
         for _ in range(self.count):
-            temp = transaction()
+            temp = Transaction()
             temp.randomize()
-            cocotb.log.info(f"Generated transaction: oper={temp.oper}, dintx={temp.dintx}")
+            cocotb.log.info(
+                f"Generated transaction: oper={temp.oper}, dintx={temp.dintx}"
+            )
             await self.queue.put(temp)
             await self.event.wait()
             self.event.clear()
 
 
-class driver:
+class Driver:
     def __init__(self, queuegd, queueds, dut):
         self.queuegd = queuegd  # drv and sco
         self.queueds = queueds  # gen and drv
@@ -51,6 +52,7 @@ class driver:
         self.rx = 0
 
     def reverse_Bits(self, n, nbits=8):
+
         result = 0
         for i in range(nbits):
             result <<= 1
@@ -63,52 +65,48 @@ class driver:
         self.dut.dintx.value = 0
         self.dut.newd.value = 0
         self.dut.rx.value = 1
-        cocotb.log.info(
-            f"--------Reset Applied @ : {get_sim_time(unit='ns')} ----------------"
-        )
+        cocotb.log.info("========== Reset Applied ==========")
         await ClockCycles(self.dut.clk, 5)
-        cocotb.log.info(
-            f"--------Reset Removed @ : {get_sim_time(unit='ns')} ----------------"
-        )
+        cocotb.log.info("========== Reset Removed ==========")
         cocotb.log.info(
             "-------------------------------------------------------------------------------"
         )
         self.dut.rst.value = 0
 
     async def data_tx(self, dintx):
-        await RisingEdge(self.dut.uart_tx_inst.uclk)  # pos edge of tx clock
+        await self.dut.uart_tx_inst.uclk.rising_edge  # pos edge of tx clock
         self.dut.rst.value = 0
         self.dut.newd.value = 1
         self.dut.rx.value = 1
         self.dut.dintx.value = dintx
-        await RisingEdge(self.dut.uart_tx_inst.uclk)
+        await self.dut.uart_tx_inst.uclk.rising_edge
         self.dut.newd.value = 0
         await self.queueds.put(dintx)
-        cocotb.log.info(f"[DRV] : Data Transmitted {int(dintx)}")
-        await RisingEdge(self.dut.donetx)
+        cocotb.log.info(f"[DRV]: Data Transmitted {int(dintx)}")
+        await self.dut.donetx.rising_edge
 
     async def data_rx(self):
-        await RisingEdge(self.dut.uart_rx_inst.uclk)
+        await self.dut.uart_rx_inst.uclk.rising_edge
         self.dut.rst.value = 0
         self.dut.newd.value = 0
         self.dut.rx.value = 0
-        await RisingEdge(self.dut.uart_rx_inst.uclk)
+        await self.dut.uart_rx_inst.uclk.rising_edge
 
         for i in range(8):
             self.rx = random.randint(0, 1)
             self.dout = (self.dout << 1) | self.rx
             self.dut.rx.value = self.rx
-            await RisingEdge(self.dut.uart_rx_inst.uclk)
+            await self.dut.uart_rx_inst.uclk.rising_edge
 
         self.rout = self.reverse_Bits(self.dout, 8)
         await self.queueds.put(self.rout)
-        cocotb.log.info(f"[DRV] : Data RCVD {int(self.rout)}")
-        await RisingEdge(self.dut.donerx)
+        cocotb.log.info(f"[DRV]: Data RCVD {int(self.rout)}")
+        await self.dut.donerx.rising_edge
         self.dut.rx.value = 1
 
-    async def recv_data(self):
+    async def send_data(self):
         while True:
-            temp = transaction()
+            temp = Transaction()
             temp = await self.queuegd.get()
             dintx = temp.dintx
             if temp.oper == 1:
@@ -117,7 +115,7 @@ class driver:
                 await self.data_rx()
 
 
-class monitor:
+class Monitor:
     def __init__(self, dut, queuems):
         self.dut = dut
         self.queuems = queuems
@@ -134,29 +132,29 @@ class monitor:
 
     async def sample_data(self):
         while True:
-            temp = transaction()
-            await RisingEdge(self.dut.uart_tx_inst.uclk)
+            temp = Transaction()
+            await self.dut.uart_tx_inst.uclk.rising_edge
             if self.dut.newd.value == 1 and self.dut.rx.value == 1:
-                await RisingEdge(self.dut.uart_tx_inst.uclk)
+                await self.dut.uart_tx_inst.uclk.rising_edge
                 for i in range(8):
-                    await RisingEdge(self.dut.uart_tx_inst.uclk)
+                    await self.dut.uart_tx_inst.uclk.rising_edge
                     self.dout = (self.dout << 1) | int(self.dut.tx.value)
 
                 self.rout = self.reverse_Bits(self.dout, 8)
                 cocotb.log.info(f"[MON]: TX DATA: {int(self.rout)}")
-                await RisingEdge(self.dut.donetx)
-                await RisingEdge(self.dut.uart_tx_inst.uclk)
+                await self.dut.donetx.rising_edge
+                await self.dut.uart_tx_inst.uclk.rising_edge
                 await self.queuems.put(self.rout)
 
             elif self.dut.rx.value == 0 and self.dut.newd.value == 0:
-                await RisingEdge(self.dut.donerx)
+                await self.dut.donerx.rising_edge
                 self.rout = int(self.dut.doutrx.value)
                 cocotb.log.info(f"[MON]: RX DATA: {int(self.rout)}")
-                await RisingEdge(self.dut.uart_tx_inst.uclk)
+                await self.dut.uart_tx_inst.uclk.rising_edge
                 await self.queuems.put(self.rout)
 
 
-class scoreboard:
+class Scoreboard:
     def __init__(self, queuems, queueds, event):
         self.queuems = queuems
         self.queueds = queueds
@@ -166,14 +164,14 @@ class scoreboard:
         while True:
             tempd = await self.queueds.get()
             tempm = await self.queuems.get()
-            print("[SCO]:", "Drv:", int(tempd), "Mon:", int(tempm))
+            cocotb.log.info(f"[SCO]: Drv: {int(tempd)} Mon:  {int(tempm)}")
 
             if tempd == tempm:
-                print("[SCO]: Data Matched")
+                cocotb.log.info("[SCO]: Data Matched")
             else:
-                print("[SCO]: Data Mismatched")
+                cocotb.log.info("[SCO]: Data Mismatched")
 
-            print("-------------------------------------------")
+            cocotb.log.info("-------------------------------------------")
 
             self.event.set()
 
@@ -185,19 +183,33 @@ async def test_UART(dut):
     queuems = Queue()
     event = Event()
 
-    gen = generator(queuegd, event, 5)
-    drv = driver(queuegd, queueds, dut)
+    n_data = 5
+    gen = Generator(queuegd, event, n_data)
+    drv = Driver(queuegd, queueds, dut)
 
-    mon = monitor(dut, queuems)
-    sco = scoreboard(queuems, queueds, event)
+    mon = Monitor(dut, queuems)
+    sco = Scoreboard(queuems, queueds, event)
 
     cocotb.start_soon(Clock(dut.clk, 10, "ns").start())
 
     await drv.reset_dut()
 
-    cocotb.start_soon(gen.gen_data())
-    cocotb.start_soon(drv.recv_data())
-    cocotb.start_soon(mon.sample_data())
+    generator_process = cocotb.start_soon(gen.gen_data())
+    driver_process = cocotb.start_soon(drv.send_data())
+    monitor_process = cocotb.start_soon(mon.sample_data())
     cocotb.start_soon(sco.compare_data())
 
-    await Timer(58000, "ns")
+    await generator_process
+    cocotb.log.info("========== All Transactions Generated ==========")
+    while True:
+        if queueds.empty() and queuems.empty() and queuegd.empty():
+            cocotb.log.info("========== All Transactions Processed ==========")
+            break
+        await ClockCycles(dut.clk, 1)
+
+    await ClockCycles(dut.clk, 5)
+    cocotb.log.info("========== Ending Test ==========")
+    driver_process.cancel()
+    monitor_process.cancel()
+
+    cocotb.log.info("========== Test Completed ==========")
